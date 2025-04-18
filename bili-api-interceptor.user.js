@@ -11,6 +11,7 @@
 // @run-at       document-start
 // ==/UserScript==
 
+// Prevent the player from retrieving the correct playback information
 Object.defineProperty(window, "__playinfo__", {
   get: function () {
     return null;
@@ -201,12 +202,14 @@ const sub_key = getWebKey(web_key_urls.sub_key_url);
             },
           });
         } else if (
-          xhr._interceptUrl.includes("api.bilibili.com/x/player/wbi/v2")
+          xhr._interceptUrl.includes("api.bilibili.com/x/player/wbi/playurl")
         ) {
           // request 1080p
           setTimeout(() => {
-            window.player.requestQuality(80);
-          }, 0);
+            const defaultQuality =
+              JSON.parse(localStorage.bpx_player_profile).media.quality || 80;
+            window.player && window.player.requestQuality(defaultQuality, null);
+          }, 1000);
         }
       }
 
