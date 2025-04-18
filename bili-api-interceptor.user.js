@@ -1,14 +1,21 @@
 // ==UserScript==
-// @name         哔哩哔哩免登录看评论看视频免弹窗
-// @namespace    http://tampermonkey.net/
+// @name         哔哩免登录看评论+1080p视频+免弹窗
+// @namespace    vruses
 // @version      1.0
-// @description  拦截指定 Bilibili 接口并返回固定对象
+// @description  通过拦截一些特定 Bilibili 接口请求或响应，让你的体验能够像登录用户一样丝滑
 // @author       layenh
 // @match        *://*.bilibili.com/*
+// @license      Mit
 // @grant        none
+// @require      https://greasyfork.org/zh-CN/scripts/533087-wbisign/code/WbiSign.js
 // @run-at       document-start
 // ==/UserScript==
-// Todo:改回wbi
+
+Object.defineProperty(window, "__playinfo__", {
+  get: function () {
+    return null;
+  },
+});
 const mockUserInfo = {
   code: 0,
   message: "0",
@@ -126,20 +133,41 @@ const mockUserInfo = {
     name_render: null,
   },
 };
+// Normally, getting data from localStorage is sufficient,
+// I doubt anyone clears localStorage manually.
+// GenWebTicket will be automatically triggered，
+// but the more async requests, the less overall speed.
+const web_key_urls = {
+  img_key_url: localStorage.getItem("wbi_img_url") || "",
+  sub_key_url: localStorage.getItem("wbi_sub_url") || "",
+};
+/**
+ * @param {string}
+ * */
+const getWebKey = function (str) {
+  return str.slice(str.lastIndexOf("/") + 1, str.lastIndexOf("."));
+};
+const img_key = getWebKey(web_key_urls.img_key_url);
+const sub_key = getWebKey(web_key_urls.sub_key_url);
 (function () {
   "use strict";
   const originalOpen = XMLHttpRequest.prototype.open;
   const originalSend = XMLHttpRequest.prototype.send;
 
-  XMLHttpRequest.prototype.open = function (
-    method,
-    url,
-    async,
-    user,
-    password
-  ) {
-    this._interceptUrl = url;
-    return originalOpen.apply(this, arguments);
+  XMLHttpRequest.prototype.open = function (...args) {
+    this._interceptUrl = args[1];
+    // inject custom qsParams to fetch higher-quality CDN video
+    if (this._interceptUrl.includes("api.bilibili.com/x/player/wbi/playurl")) {
+      // Remove w_rid & wts, set try_look=1 and qn=80, then re-WbiSign
+      const qsParams = Object.fromEntries(
+        new URLSearchParams(args[1].split(/\?|&w_rid/)[1]).entries()
+      );
+      Reflect.set(qsParams, "qn", 80); //qualityNumber->1080p
+      Reflect.set(qsParams, "try_look", 1);
+      const query = new WbiSign().encWbi(qsParams, img_key, sub_key);
+      args[1] = "//api.bilibili.com/x/player/wbi/playurl?" + query;
+    }
+    return originalOpen.apply(this, args);
   };
 
   XMLHttpRequest.prototype.send = function (body) {
@@ -151,14 +179,34 @@ const mockUserInfo = {
           xhr._interceptUrl.includes("api.bilibili.com/x/web-interface/nav")
         ) {
           const resJson = JSON.parse(xhr.responseText);
+          const wbi_img = resJson.data.wbi_img;
           Object.defineProperty(xhr, "responseText", {
             get: function () {
-              if (parsed?.data?.isLogin === false) {
+              if (resJson?.data?.isLogin === false) {
+                // replace true wbi_key
+                mockUserInfo.data.wbi_img = wbi_img;
                 return JSON.stringify(mockUserInfo);
               }
               return JSON.stringify(resJson);
             },
           });
+        } else if (
+          xhr._interceptUrl.includes("api.bilibili.com/x/player/wbi/v2")
+        ) {
+          const resJson = JSON.parse(xhr.responseText);
+          resJson.data.login_mid = Math.floor(Math.random() * 100000);
+          Object.defineProperty(xhr, "responseText", {
+            get: function () {
+              return JSON.stringify(resJson);
+            },
+          });
+        } else if (
+          xhr._interceptUrl.includes("api.bilibili.com/x/player/wbi/v2")
+        ) {
+          // request 1080p
+          setTimeout(() => {
+            window.player.requestQuality(80);
+          }, 0);
         }
       }
 
