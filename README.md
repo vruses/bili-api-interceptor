@@ -53,7 +53,7 @@
 
 - 拦截`main`和`reply`请求，去除`cookie`获取所有评论数据。
 
-  ![Image](https://github.com/user-attachments/assets/38339ffe-9a3d-4cdb-b577-589a351816f0)
+![Image](https://github.com/user-attachments/assets/38339ffe-9a3d-4cdb-b577-589a351816f0)
 
 ------
 
