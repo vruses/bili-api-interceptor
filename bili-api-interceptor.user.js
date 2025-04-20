@@ -5,6 +5,8 @@
 // @description  通过拦截一些特定 Bilibili 接口请求或响应，让你的体验能够像登录用户一样丝滑
 // @author       layenh
 // @match        *://*.bilibili.com/*
+// @homepage     https://github.com/vruses/bili-api-interceptor
+// @supportURL   https://github.com/vruses/bili-api-interceptor/issues
 // @license      Mit
 // @grant        none
 // @require      https://update.greasyfork.org/scripts/533087/1572495/WbiSign.js
