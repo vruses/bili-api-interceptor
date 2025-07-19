@@ -1,0 +1,20 @@
+{
+  "name": "monkey-test",
+  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "<vurses@qq.com>",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.15",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5",
+    "vite-plugin-monkey": "^5.0.3"
+  }
+}
