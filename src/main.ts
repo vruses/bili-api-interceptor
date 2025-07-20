@@ -1,5 +1,4 @@
-import { mockUserInfo, web_key_urls } from "@/constants";
-import { useWebKey } from "@/utils/web-key";
+import runApp from "@/core";
 
 // Prevent the player from retrieving the correct playback information
 Object.defineProperty(window, "__playinfo__", {
@@ -7,8 +6,4 @@ Object.defineProperty(window, "__playinfo__", {
     return null;
   },
 });
-console.log(mockUserInfo);
-const img_key = useWebKey(web_key_urls.img_key_url);
-const sub_key = useWebKey(web_key_urls.sub_key_url);
-console.log(img_key, sub_key);
-
+runApp();
