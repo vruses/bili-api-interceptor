@@ -1,7 +1,7 @@
 {
-  "name": "monkey-test",
+  "name": "bili-api-interceptor",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.2.0",
   "main": "index.js",
   "author": "<vurses@qq.com>",
   "license": "MIT",

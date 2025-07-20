@@ -1,25 +1,26 @@
 import { defineConfig } from "vite";
 import monkey from "vite-plugin-monkey";
-import { fileURLToPath } from 'url';
-import { dirname, resolve } from 'path';
+import { fileURLToPath } from "url";
+import { dirname, resolve } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  resolve:{
-    alias:{
-      '@': resolve(__dirname, 'src'),
-    }
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "src"),
+    },
   },
   plugins: [
     monkey({
       entry: "src/main.ts",
       userscript: {
         name: "哔哩免登录看评论+1080p视频+免弹窗",
-        version: "1.1",
-        description: "通过拦截一些特定 Bilibili 接口请求或响应，让你的体验能够像登录用户一样丝滑",
+        version: "1.2",
+        description:
+          "通过拦截一些特定 Bilibili 接口请求或响应，让你的体验能够像登录用户一样丝滑",
         homepage: "https://github.com/vruses/bili-api-interceptor",
         supportURL: "https://github.com/vruses/bili-api-interceptor/issues",
         grant: "none",
