@@ -444,6 +444,7 @@ var ajaxHooker = (function () {
       Object.assign(init, options);
       init.method = init.method || "GET";
       init.headers = init.headers || {};
+      init.credentials = init.credentials;
       const request = {
         type: "fetch",
         url: url,
@@ -453,6 +454,7 @@ var ajaxHooker = (function () {
         data: init.body,
         response: null,
         async: true,
+        credentials: init.credentials,
       };
       const req = new AHRequest(request);
       await req.waitForRequestKeys();
