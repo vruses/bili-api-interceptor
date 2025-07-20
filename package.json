@@ -16,5 +16,8 @@
     "typescript": "^5.7.2",
     "vite": "^6.0.5",
     "vite-plugin-monkey": "^5.0.3"
+  },
+  "dependencies": {
+    "ts-md5": "^2.0.1"
   }
 }

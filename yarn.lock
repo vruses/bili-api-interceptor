@@ -526,6 +526,11 @@ tinyglobby@^0.2.13:
     fdir "^6.4.4"
     picomatch "^4.0.2"
 
+ts-md5@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.npmmirror.com/ts-md5/-/ts-md5-2.0.1.tgz#b05fb6d65f2116aa4591280c8d0510084567f291"
+  integrity sha512-yF35FCoEOFBzOclSkMNEUbFQZuv89KEQ+5Xz03HrMSGUGB1+r+El+JiGOFwsP4p9RFNzwlrydYoTLvPOuICl9w==
+
 typescript@^5.7.2:
   version "5.8.3"
   resolved "https://registry.npmmirror.com/typescript/-/typescript-5.8.3.tgz#92f8a3e5e3cf497356f4178c34cd65a7f5e8440e"
