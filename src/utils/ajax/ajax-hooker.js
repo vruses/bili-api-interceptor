@@ -484,6 +484,7 @@ var ajaxHooker = (function () {
       init.method = request.method;
       init.headers = request.headers;
       init.body = request.data;
+      init.credentials = request.credentials;
       winAh.realFetch.call(win, request.url, init).then((res) => {
         if (typeof request.response === "function") {
           const response = {

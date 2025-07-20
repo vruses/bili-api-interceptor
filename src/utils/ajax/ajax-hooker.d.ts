@@ -55,6 +55,8 @@ export interface AjaxRequest {
   response: ResponseHandler | null;
   /** 是否异步 */
   async: boolean;
+  /** 是否携带身份认证如cookie */
+  credentials: "omit" | "include" | "same-origin";
 }
 
 /**
