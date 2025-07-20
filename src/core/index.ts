@@ -5,15 +5,13 @@ import type { XhrResponse } from "@/utils/ajax/ajax-hooker";
 import { PlayerUserInfo } from "@/types/response";
 import { encWbi } from "@/utils/wbi-sign";
 
-
-const runApp = () => {
+const runScript = () => {
   const img_key = useWebKey(web_key_urls.img_key_url);
   const sub_key = useWebKey(web_key_urls.sub_key_url);
 
   ajaxHooker.hook((request) => {
     // 伪造登录响应数据
     if (request.url.includes("/x/web-interface/nav")) {
-      // 取消原请求并伪造一个成功响应
       request.response = (res: XhrResponse) => {
         res.responseText = JSON.stringify(mockUserInfo);
       };
@@ -49,14 +47,6 @@ const runApp = () => {
       const query = encWbi(qsParams, img_key, sub_key);
       request.url = "//api.bilibili.com/x/player/wbi/playurl?" + query;
     }
-    if (request.url.includes("x/player/wbi/playurl")) {
-      // request 1080p
-      setTimeout(() => {
-        const defaultQuality =
-          JSON.parse(localStorage.bpx_player_profile).media.quality || 80;
-        window.player && window.player.requestQuality(defaultQuality, null);
-      }, 3000);
-    }
   });
 };
-export default runApp;
+export default runScript;
