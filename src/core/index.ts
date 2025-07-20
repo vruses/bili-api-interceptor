@@ -30,6 +30,7 @@ const runScript = () => {
           if (!res.responseText) return;
           const playerResponse: PlayerUserInfo = JSON.parse(res.responseText);
           playerResponse.data.login_mid = Math.floor(Math.random() * 100000);
+          playerResponse.data.level_info.current_level = 6;
           res.responseText = JSON.stringify(playerResponse);
         } catch (error) {
           console.log(error);

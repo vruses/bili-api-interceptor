@@ -6,5 +6,9 @@ export interface PlayerUserInfo {
   data: {
     // 为0则未登录
     login_mid: number;
+    // 用户等级信息
+    level_info: {
+      current_level: number;
+    };
   };
 }

@@ -16,7 +16,7 @@ export const mockUserInfo = {
     },
     mid: 3493281916783362,
     mobile_verified: 1,
-    money: 10000000000000,
+    money: 9999.99,
     moral: 70,
     official: {
       role: 0,
