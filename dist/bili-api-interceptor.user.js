@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         哔哩免登录看评论+1080p视频+免弹窗
 // @namespace    vruses
-// @version      1.2
+// @version      1.2.1
 // @author       <vurses@qq.com>
 // @description  通过拦截一些特定 Bilibili 接口请求或响应，让你的体验能够像登录用户一样丝滑
 // @license      MIT
@@ -969,7 +969,7 @@
         request.response = (res) => {
           Object.defineProperty(window, "__playinfo__", {
             get: function() {
-              return JSON.parse(res.responseText ?? "");
+              return JSON.parse((res == null ? void 0 : res.responseText) ?? "{}");
             },
             configurable: true
           });
