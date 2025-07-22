@@ -1,8 +1,8 @@
-import { mockUserInfo, web_key_urls } from "@/constants";
+import { historyList, mockUserInfo, web_key_urls } from "@/constants";
 import { useWebKey } from "@/utils/web-key";
 import ajaxHooker from "@/utils/ajax/ajax-hooker";
-import type { XhrResponse } from "@/utils/ajax/ajax-hooker";
-import { PlayerUserInfo } from "@/types/response";
+import type { FetchResponse, XhrResponse } from "@/utils/ajax/ajax-hooker";
+import type { HistoryListRes, PlayerUserInfo } from "@/types/response";
 import { encWbi } from "@/utils/wbi-sign";
 
 const runScript = () => {
@@ -12,9 +12,17 @@ const runScript = () => {
   ajaxHooker.hook((request) => {
     // 伪造登录响应数据
     if (request.url.includes("/x/web-interface/nav")) {
-      request.response = (res: XhrResponse) => {
-        res.responseText = JSON.stringify(mockUserInfo);
-      };
+      if (request.type === "xhr") {
+        request.response = (res: XhrResponse) => {
+          res.responseText = JSON.stringify(mockUserInfo);
+        };
+      }
+      // 移动端登录
+      if (request.type === "fetch") {
+        request.response = (res: FetchResponse) => {
+          res.json = mockUserInfo;
+        };
+      }
     }
     // 拦截获取视频评论、评论的评论列表请求，解除评论获取的数量限制
     if (
@@ -26,15 +34,19 @@ const runScript = () => {
     //播放器请求的用户信息，需要返回登录状态
     if (request.url.includes("/x/player/wbi/v2")) {
       request.response = (res: XhrResponse) => {
-        try {
-          if (!res.responseText) return;
-          const playerResponse: PlayerUserInfo = JSON.parse(res.responseText);
-          playerResponse.data.login_mid = Math.floor(Math.random() * 100000);
-          playerResponse.data.level_info.current_level = 6;
-          res.responseText = JSON.stringify(playerResponse);
-        } catch (error) {
-          console.log(error);
-        }
+        if (!res?.responseText) return;
+        const playerResponse: PlayerUserInfo = JSON.parse(res.responseText);
+        playerResponse.data.login_mid = Math.floor(Math.random() * 100000);
+        playerResponse.data.level_info.current_level = 6;
+        res.responseText = JSON.stringify(playerResponse);
+      };
+    }
+    // 历史观看记录
+    if (request.url.includes("/x/web-interface/history/cursor")) {
+      request.response = (res: FetchResponse) => {
+        if (!res?.json) return;
+        const historyListRes: HistoryListRes = historyList;
+        res.json = historyListRes;
       };
     }
     // inject custom qsParams to fetch higher-quality CDN video

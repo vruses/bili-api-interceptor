@@ -12,3 +12,19 @@ export interface PlayerUserInfo {
     };
   };
 }
+
+export interface HistoryListRes {
+  code: number;
+  message: string;
+  ttl: number;
+  data: {
+    cursor: {
+      business: string;
+      max: number;
+      ps: number;
+      view_at: number;
+    };
+    list: Array<any>;
+    tab: Array<{ type: string; name: string }>;
+  };
+}
