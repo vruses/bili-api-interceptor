@@ -47,6 +47,15 @@ const runScript = () => {
       Reflect.set(qsParams, "try_look", 1);
       const query = encWbi(qsParams, img_key, sub_key);
       request.url = "//api.bilibili.com/x/player/wbi/playurl?" + query;
+      // 还原window.__playinfo__对象
+      request.response = (res: XhrResponse) => {
+        Object.defineProperty(window, "__playinfo__", {
+          get: function () {
+            return JSON.parse(res?.responseText ?? "{}");
+          },
+          configurable: true,
+        });
+      };
     }
   });
 };

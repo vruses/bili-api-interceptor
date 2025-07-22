@@ -55,10 +55,8 @@ export const mockUserInfo = {
       use_img_label: true,
       img_label_uri_hans: "",
       img_label_uri_hant: "",
-      img_label_uri_hans_static:
-        "https://i0.hdslb.com/bfs/vip/d7b702ef65a976b20ed854cbd04cb9e27341bb79.png",
-      img_label_uri_hant_static:
-        "https://i0.hdslb.com/bfs/activity-plat/static/20220614/e369244d0b14644f5e1a06431e22a4d5/KJunwh19T5.png",
+      img_label_uri_hans_static: "",
+      img_label_uri_hant_static: "",
     },
     vip_avatar_subscript: 0,
     vip_nickname_color: "",
@@ -79,10 +77,8 @@ export const mockUserInfo = {
         use_img_label: true,
         img_label_uri_hans: "",
         img_label_uri_hant: "",
-        img_label_uri_hans_static:
-          "https://i0.hdslb.com/bfs/vip/d7b702ef65a976b20ed854cbd04cb9e27341bb79.png",
-        img_label_uri_hant_static:
-          "https://i0.hdslb.com/bfs/activity-plat/static/20220614/e369244d0b14644f5e1a06431e22a4d5/KJunwh19T5.png",
+        img_label_uri_hans_static: "",
+        img_label_uri_hant_static: "",
       },
       avatar_subscript: 0,
       nickname_color: "",
@@ -106,10 +102,8 @@ export const mockUserInfo = {
     answer_status: 0,
     is_senior_member: 1,
     wbi_img: {
-      img_url:
-        "https://i0.hdslb.com/bfs/wbi/7cd084941338484aae1ad9425b84077c.png",
-      sub_url:
-        "https://i0.hdslb.com/bfs/wbi/4932caff0ff746eab6f01bf08b70ac45.png",
+      img_url: "",
+      sub_url: "",
     },
     is_jury: false,
     name_render: null,
