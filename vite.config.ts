@@ -18,7 +18,7 @@ export default defineConfig({
       entry: "src/main.ts",
       userscript: {
         name: "哔哩免登录看评论+1080p视频+免弹窗",
-        version: "1.2.1",
+        version: "1.2.2",
         description:
           "通过拦截一些特定 Bilibili 接口请求或响应，让你的体验能够像登录用户一样丝滑",
         homepage: "https://github.com/vruses/bili-api-interceptor",

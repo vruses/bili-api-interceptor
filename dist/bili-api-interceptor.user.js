@@ -19,6 +19,34 @@
   var __defProp = Object.defineProperty;
   var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
   var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+  const historyList = {
+    code: 0,
+    message: "0",
+    ttl: 1,
+    data: {
+      cursor: {
+        max: 1,
+        view_at: 0,
+        business: "archive",
+        ps: 20
+      },
+      tab: [
+        {
+          type: "archive",
+          name: "视频"
+        },
+        {
+          type: "live",
+          name: "直播"
+        },
+        {
+          type: "article",
+          name: "专栏"
+        }
+      ],
+      list: []
+    }
+  };
   const mockUserInfo = {
     code: 0,
     message: "0",
@@ -938,24 +966,34 @@
     const sub_key = useWebKey(web_key_urls.sub_key_url);
     ajaxHooker.hook((request) => {
       if (request.url.includes("/x/web-interface/nav")) {
-        request.response = (res) => {
-          res.responseText = JSON.stringify(mockUserInfo);
-        };
+        if (request.type === "xhr") {
+          request.response = (res) => {
+            res.responseText = JSON.stringify(mockUserInfo);
+          };
+        }
+        if (request.type === "fetch") {
+          request.response = (res) => {
+            res.json = mockUserInfo;
+          };
+        }
       }
       if (request.url.includes("/x/v2/reply/wbi/main") || request.url.includes("/x/v2/reply/reply")) {
         request.credentials = "omit";
       }
       if (request.url.includes("/x/player/wbi/v2")) {
         request.response = (res) => {
-          try {
-            if (!res.responseText) return;
-            const playerResponse = JSON.parse(res.responseText);
-            playerResponse.data.login_mid = Math.floor(Math.random() * 1e5);
-            playerResponse.data.level_info.current_level = 6;
-            res.responseText = JSON.stringify(playerResponse);
-          } catch (error) {
-            console.log(error);
-          }
+          if (!(res == null ? void 0 : res.responseText)) return;
+          const playerResponse = JSON.parse(res.responseText);
+          playerResponse.data.login_mid = Math.floor(Math.random() * 1e5);
+          playerResponse.data.level_info.current_level = 6;
+          res.responseText = JSON.stringify(playerResponse);
+        };
+      }
+      if (request.url.includes("/x/web-interface/history/cursor")) {
+        request.response = (res) => {
+          if (!(res == null ? void 0 : res.json)) return;
+          const historyListRes = historyList;
+          res.json = historyListRes;
         };
       }
       if (request.url.includes("api.bilibili.com/x/player/wbi/playurl")) {
