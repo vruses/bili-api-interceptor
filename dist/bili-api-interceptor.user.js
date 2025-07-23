@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         哔哩免登录看评论+1080p视频+免弹窗
 // @namespace    vruses
-// @version      1.2.1
+// @version      1.2.2
 // @author       <vurses@qq.com>
 // @description  通过拦截一些特定 Bilibili 接口请求或响应，让你的体验能够像登录用户一样丝滑
 // @license      MIT
@@ -167,7 +167,7 @@
   };
   // @license      GNU LGPL-3.0
   var ajaxHooker = function() {
-    const version = "1.4.6";
+    const version = "1.4.7";
     const hookInst = {
       hookFns: [],
       filters: []
@@ -177,20 +177,18 @@
     const resProto = win.Response.prototype;
     const xhrResponses = ["response", "responseText", "responseXML"];
     const fetchResponses = ["arrayBuffer", "blob", "formData", "json", "text"];
-    const fetchInitProps = [
-      "method",
-      "headers",
-      "body",
-      "mode",
-      "credentials",
+    const xhrExtraProps = ["responseType", "timeout", "withCredentials"];
+    const fetchExtraProps = [
       "cache",
+      "credentials",
+      "integrity",
+      "keepalive",
+      "mode",
+      "priority",
       "redirect",
       "referrer",
       "referrerPolicy",
-      "integrity",
-      "keepalive",
-      "signal",
-      "priority"
+      "signal"
     ];
     const xhrAsyncEvents = ["readystatechange", "load", "loadend"];
     const getType = {}.toString.call.bind({}.toString);
@@ -264,6 +262,10 @@
         this.request = request;
         this.requestClone = { ...this.request };
       }
+      _recoverRequestKey(key) {
+        if (key in this.requestClone) this.request[key] = this.requestClone[key];
+        else delete this.request[key];
+      }
       shouldFilter(filters) {
         const { type, url, method, async } = this.request;
         return filters.length && !filters.find((obj) => {
@@ -279,7 +281,6 @@
         });
       }
       waitForRequestKeys() {
-        const requestKeys = ["url", "method", "abort", "headers", "data"];
         if (!this.request.async) {
           win.__ajaxHooker.hookInsts.forEach(({ hookFns, filters }) => {
             if (this.shouldFilter(filters)) return;
@@ -287,26 +288,31 @@
               if (getType(fn) === "[object Function]")
                 catchError(fn, this.request);
             });
-            requestKeys.forEach((key) => {
-              if (isThenable(this.request[key]))
-                this.request[key] = this.requestClone[key];
-            });
+            for (const key in this.request) {
+              if (isThenable(this.request[key])) this._recoverRequestKey(key);
+            }
           });
           return new SyncThenable();
         }
         const promises = [];
+        const ignoreKeys = /* @__PURE__ */ new Set(["type", "async", "response"]);
         win.__ajaxHooker.hookInsts.forEach(({ hookFns, filters }) => {
           if (this.shouldFilter(filters)) return;
           promises.push(
             Promise.all(hookFns.map((fn) => catchError(fn, this.request))).then(
-              () => Promise.all(
-                requestKeys.map(
-                  (key) => Promise.resolve(this.request[key]).then(
-                    (val) => this.request[key] = val,
-                    () => this.request[key] = this.requestClone[key]
+              () => {
+                const requestKeys = [];
+                for (const key in this.request)
+                  !ignoreKeys.has(key) && requestKeys.push(key);
+                return Promise.all(
+                  requestKeys.map(
+                    (key) => Promise.resolve(this.request[key]).then(
+                      (val) => this.request[key] = val,
+                      () => this._recoverRequestKey(key)
+                    )
                   )
-                )
-              )
+                );
+              }
             )
           );
         });
@@ -469,6 +475,7 @@
         e.stopImmediatePropagation = stopImmediatePropagation;
         defineProp(e, "target", () => this.proxyXhr);
         defineProp(e, "currentTarget", () => this.proxyXhr);
+        defineProp(e, "srcElement", () => this.proxyXhr);
         this.proxyEvents[e.type] && this.proxyEvents[e.type].forEach((fn) => {
           this.resThenable.then(
             () => !e.ajaxHooker_isStopped && fn.call(this.proxyXhr, e)
@@ -544,6 +551,9 @@
             for (const header in request.headers) {
               xhr.setRequestHeader(header, request.headers[header]);
             }
+            for (const prop of xhrExtraProps) {
+              if (prop in request) xhr[prop] = request[prop];
+            }
             xhr.send(request.data);
           }
         });
@@ -565,15 +575,16 @@
       return new Promise(async (resolve, reject) => {
         const init = {};
         if (getType(url) === "[object Request]") {
-          for (const prop of fetchInitProps) init[prop] = url[prop];
+          init.method = url.method;
+          init.headers = url.headers;
           if (url.body) init.body = await url.arrayBuffer();
+          for (const prop of fetchExtraProps) init[prop] = url[prop];
           url = url.url;
         }
         url = url.toString();
         Object.assign(init, options);
         init.method = init.method || "GET";
         init.headers = init.headers || {};
-        init.credentials = init.credentials;
         const request = {
           type: "fetch",
           url,
@@ -582,8 +593,7 @@
           headers: parseHeaders(init.headers),
           data: init.body,
           response: null,
-          async: true,
-          credentials: init.credentials
+          async: true
         };
         const req = new AHRequest(request);
         await req.waitForRequestKeys();
@@ -615,7 +625,9 @@
         init.method = request.method;
         init.headers = request.headers;
         init.body = request.data;
-        init.credentials = request.credentials;
+        for (const prop of fetchExtraProps) {
+          if (prop in request) init[prop] = request[prop];
+        }
         winAh.realFetch.call(win, request.url, init).then((res) => {
           if (typeof request.response === "function") {
             const response = {

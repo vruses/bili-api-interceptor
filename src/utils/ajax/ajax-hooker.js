@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name         ajaxHooker
 // @author       cxxjackie
-// @version      1.4.6
+// @version      1.4.7
 // @supportURL   https://bbs.tampermonkey.net.cn/thread-3284-1-1.html
 // @license      GNU LGPL-3.0
 // ==/UserScript==
 
 var ajaxHooker = (function () {
   "use strict";
-  const version = "1.4.6";
+  const version = "1.4.7";
   const hookInst = {
     hookFns: [],
     filters: [],
@@ -18,20 +18,18 @@ var ajaxHooker = (function () {
   const resProto = win.Response.prototype;
   const xhrResponses = ["response", "responseText", "responseXML"];
   const fetchResponses = ["arrayBuffer", "blob", "formData", "json", "text"];
-  const fetchInitProps = [
-    "method",
-    "headers",
-    "body",
-    "mode",
-    "credentials",
+  const xhrExtraProps = ["responseType", "timeout", "withCredentials"];
+  const fetchExtraProps = [
     "cache",
+    "credentials",
+    "integrity",
+    "keepalive",
+    "mode",
+    "priority",
     "redirect",
     "referrer",
     "referrerPolicy",
-    "integrity",
-    "keepalive",
     "signal",
-    "priority",
   ];
   const xhrAsyncEvents = ["readystatechange", "load", "loadend"];
   const getType = {}.toString.call.bind({}.toString);
@@ -109,6 +107,10 @@ var ajaxHooker = (function () {
       this.request = request;
       this.requestClone = { ...this.request };
     }
+    _recoverRequestKey(key) {
+      if (key in this.requestClone) this.request[key] = this.requestClone[key];
+      else delete this.request[key];
+    }
     shouldFilter(filters) {
       const { type, url, method, async } = this.request;
       return (
@@ -129,7 +131,6 @@ var ajaxHooker = (function () {
       );
     }
     waitForRequestKeys() {
-      const requestKeys = ["url", "method", "abort", "headers", "data"];
       if (!this.request.async) {
         win.__ajaxHooker.hookInsts.forEach(({ hookFns, filters }) => {
           if (this.shouldFilter(filters)) return;
@@ -137,27 +138,31 @@ var ajaxHooker = (function () {
             if (getType(fn) === "[object Function]")
               catchError(fn, this.request);
           });
-          requestKeys.forEach((key) => {
-            if (isThenable(this.request[key]))
-              this.request[key] = this.requestClone[key];
-          });
+          for (const key in this.request) {
+            if (isThenable(this.request[key])) this._recoverRequestKey(key);
+          }
         });
         return new SyncThenable();
       }
       const promises = [];
+      const ignoreKeys = new Set(["type", "async", "response"]);
       win.__ajaxHooker.hookInsts.forEach(({ hookFns, filters }) => {
         if (this.shouldFilter(filters)) return;
         promises.push(
           Promise.all(hookFns.map((fn) => catchError(fn, this.request))).then(
-            () =>
-              Promise.all(
+            () => {
+              const requestKeys = [];
+              for (const key in this.request)
+                !ignoreKeys.has(key) && requestKeys.push(key);
+              return Promise.all(
                 requestKeys.map((key) =>
                   Promise.resolve(this.request[key]).then(
                     (val) => (this.request[key] = val),
-                    () => (this.request[key] = this.requestClone[key])
+                    () => this._recoverRequestKey(key)
                   )
                 )
-              )
+              );
+            }
           )
         );
       });
@@ -338,6 +343,7 @@ var ajaxHooker = (function () {
       e.stopImmediatePropagation = stopImmediatePropagation;
       defineProp(e, "target", () => this.proxyXhr);
       defineProp(e, "currentTarget", () => this.proxyXhr);
+      defineProp(e, "srcElement", () => this.proxyXhr);
       this.proxyEvents[e.type] &&
         this.proxyEvents[e.type].forEach((fn) => {
           this.resThenable.then(
@@ -415,6 +421,9 @@ var ajaxHooker = (function () {
           for (const header in request.headers) {
             xhr.setRequestHeader(header, request.headers[header]);
           }
+          for (const prop of xhrExtraProps) {
+            if (prop in request) xhr[prop] = request[prop];
+          }
           xhr.send(request.data);
         }
       });
@@ -436,15 +445,16 @@ var ajaxHooker = (function () {
     return new Promise(async (resolve, reject) => {
       const init = {};
       if (getType(url) === "[object Request]") {
-        for (const prop of fetchInitProps) init[prop] = url[prop];
+        init.method = url.method;
+        init.headers = url.headers;
         if (url.body) init.body = await url.arrayBuffer();
+        for (const prop of fetchExtraProps) init[prop] = url[prop];
         url = url.url;
       }
       url = url.toString();
       Object.assign(init, options);
       init.method = init.method || "GET";
       init.headers = init.headers || {};
-      init.credentials = init.credentials;
       const request = {
         type: "fetch",
         url: url,
@@ -454,7 +464,6 @@ var ajaxHooker = (function () {
         data: init.body,
         response: null,
         async: true,
-        credentials: init.credentials,
       };
       const req = new AHRequest(request);
       await req.waitForRequestKeys();
@@ -486,7 +495,9 @@ var ajaxHooker = (function () {
       init.method = request.method;
       init.headers = request.headers;
       init.body = request.data;
-      init.credentials = request.credentials;
+      for (const prop of fetchExtraProps) {
+        if (prop in request) init[prop] = request[prop];
+      }
       winAh.realFetch.call(win, request.url, init).then((res) => {
         if (typeof request.response === "function") {
           const response = {
