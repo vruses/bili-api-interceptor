@@ -10,6 +10,10 @@ const runScript = () => {
   const sub_key = useWebKey(web_key_urls.sub_key_url);
 
   ajaxHooker.hook((request) => {
+    // 纠正b站搜索页的热搜接口拼接损坏的问题
+    if (request.url.includes("/api.bilibili.comx/web-interface/search")) {
+      request.url = request.url.replace(/\.com(?!\/)/, ".com/");
+    }
     // 伪造登录响应数据
     if (request.url.includes("/x/web-interface/nav")) {
       if (request.type === "xhr") {
