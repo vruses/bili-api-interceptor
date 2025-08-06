@@ -1,5 +1,10 @@
 import runScript from "@/core";
+import toggleIntercept from "@/utils/websocket/intercept";
 
+// 修改ws连接成功后的发送的第一个数据包以在直播页获取弹幕
+if(location.href.includes('live.bilibili.com')){
+  toggleIntercept()
+}
 // Prevent the player from retrieving the correct playback information
 Object.defineProperty(window, "__playinfo__", {
   get: function () {

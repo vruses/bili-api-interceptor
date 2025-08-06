@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         哔哩免登录看评论+1080p视频+免弹窗
 // @namespace    vruses
-// @version      1.2.2
+// @version      1.2.4
 // @author       <vurses@qq.com>
 // @description  通过拦截一些特定 Bilibili 接口请求或响应，让你的体验能够像登录用户一样丝滑
 // @license      MIT
@@ -977,6 +977,9 @@
     const img_key = useWebKey(web_key_urls.img_key_url);
     const sub_key = useWebKey(web_key_urls.sub_key_url);
     ajaxHooker.hook((request) => {
+      if (request.url.includes("/api.bilibili.comx/web-interface/search")) {
+        request.url = request.url.replace(/\.com(?!\/)/, ".com/");
+      }
       if (request.url.includes("/x/web-interface/nav")) {
         if (request.type === "xhr") {
           request.response = (res) => {
@@ -1027,6 +1030,51 @@
       }
     });
   };
+  let isInterceptActive = false;
+  let wsOriginalSend = null;
+  function toggleIntercept() {
+    if (!isInterceptActive) {
+      wsOriginalSend = WebSocket.prototype.send;
+      isInterceptActive = true;
+      WebSocket.prototype.send = function(data) {
+        if (data instanceof ArrayBuffer) {
+          const view = new DataView(data);
+          if (view.getUint32(8, false) === 7) {
+            return wsOriginalSend.call(this, modifyUidPacket(data));
+          }
+        }
+        return wsOriginalSend.call(this, data);
+      };
+    } else {
+      if (wsOriginalSend) {
+        WebSocket.prototype.send = wsOriginalSend;
+      }
+      isInterceptActive = false;
+      wsOriginalSend = null;
+    }
+  }
+  function modifyUidPacket(data) {
+    const newBuffer = data.slice();
+    const jsonStart = 16;
+    const jsonBytes = new Uint8Array(newBuffer, jsonStart);
+    const jsonString = new TextDecoder().decode(jsonBytes);
+    const jsonObj = JSON.parse(jsonString);
+    jsonObj.uid = 0;
+    const newJsonString = JSON.stringify(jsonObj);
+    const newJsonBytes = new TextEncoder().encode(newJsonString);
+    const newPacket = new ArrayBuffer(16 + newJsonBytes.length);
+    const newView = new DataView(newPacket);
+    const originalView = new DataView(data);
+    for (let i = 0; i < 16; i++) {
+      newView.setUint8(i, originalView.getUint8(i));
+    }
+    newView.setUint32(0, newJsonBytes.length + 16, false);
+    new Uint8Array(newPacket, 16).set(newJsonBytes);
+    return newPacket;
+  }
+  if (location.href.includes("live.bilibili.com")) {
+    toggleIntercept();
+  }
   Object.defineProperty(window, "__playinfo__", {
     get: function() {
       return null;
