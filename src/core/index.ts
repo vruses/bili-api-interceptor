@@ -2,7 +2,11 @@ import { historyList, mockUserInfo, web_key_urls } from "@/constants";
 import { useWebKey } from "@/utils/web-key";
 import ajaxHooker from "@/utils/ajax/ajax-hooker";
 import type { FetchResponse, XhrResponse } from "@/utils/ajax/ajax-hooker";
-import type { HistoryListRes, PlayerUserInfo } from "@/types/response";
+import type {
+  HistoryListRes,
+  PlayerUserInfo,
+  ResultType,
+} from "@/types/response";
 import { encWbi } from "@/utils/wbi-sign";
 
 const runScript = () => {
@@ -39,7 +43,9 @@ const runScript = () => {
     if (request.url.includes("/x/player/wbi/v2")) {
       request.response = (res: XhrResponse) => {
         if (!res?.responseText) return;
-        const playerResponse: PlayerUserInfo = JSON.parse(res.responseText);
+        const playerResponse: ResultType<PlayerUserInfo> = JSON.parse(
+          res.responseText
+        );
         playerResponse.data.login_mid = Math.floor(Math.random() * 100000);
         playerResponse.data.level_info.current_level = 6;
         res.responseText = JSON.stringify(playerResponse);
@@ -49,7 +55,7 @@ const runScript = () => {
     if (request.url.includes("/x/web-interface/history/cursor")) {
       request.response = (res: FetchResponse) => {
         if (!res?.json) return;
-        const historyListRes: HistoryListRes = historyList;
+        const historyListRes: ResultType<HistoryListRes> = historyList;
         res.json = historyListRes;
       };
     }
