@@ -998,7 +998,9 @@
       if (request.url.includes("/x/player/wbi/v2")) {
         request.response = (res) => {
           if (!(res == null ? void 0 : res.responseText)) return;
-          const playerResponse = JSON.parse(res.responseText);
+          const playerResponse = JSON.parse(
+            res.responseText
+          );
           playerResponse.data.login_mid = Math.floor(Math.random() * 1e5);
           playerResponse.data.level_info.current_level = 6;
           res.responseText = JSON.stringify(playerResponse);
@@ -1072,6 +1074,178 @@
     new Uint8Array(newPacket, 16).set(newJsonBytes);
     return newPacket;
   }
+  var freeGlobal = typeof global == "object" && global && global.Object === Object && global;
+  var freeSelf = typeof self == "object" && self && self.Object === Object && self;
+  var root = freeGlobal || freeSelf || Function("return this")();
+  var Symbol$1 = root.Symbol;
+  var objectProto$1 = Object.prototype;
+  var hasOwnProperty = objectProto$1.hasOwnProperty;
+  var nativeObjectToString$1 = objectProto$1.toString;
+  var symToStringTag$1 = Symbol$1 ? Symbol$1.toStringTag : void 0;
+  function getRawTag(value) {
+    var isOwn = hasOwnProperty.call(value, symToStringTag$1), tag = value[symToStringTag$1];
+    try {
+      value[symToStringTag$1] = void 0;
+      var unmasked = true;
+    } catch (e) {
+    }
+    var result = nativeObjectToString$1.call(value);
+    if (unmasked) {
+      if (isOwn) {
+        value[symToStringTag$1] = tag;
+      } else {
+        delete value[symToStringTag$1];
+      }
+    }
+    return result;
+  }
+  var objectProto = Object.prototype;
+  var nativeObjectToString = objectProto.toString;
+  function objectToString(value) {
+    return nativeObjectToString.call(value);
+  }
+  var nullTag = "[object Null]", undefinedTag = "[object Undefined]";
+  var symToStringTag = Symbol$1 ? Symbol$1.toStringTag : void 0;
+  function baseGetTag(value) {
+    if (value == null) {
+      return value === void 0 ? undefinedTag : nullTag;
+    }
+    return symToStringTag && symToStringTag in Object(value) ? getRawTag(value) : objectToString(value);
+  }
+  function isObjectLike(value) {
+    return value != null && typeof value == "object";
+  }
+  var symbolTag = "[object Symbol]";
+  function isSymbol(value) {
+    return typeof value == "symbol" || isObjectLike(value) && baseGetTag(value) == symbolTag;
+  }
+  var reWhitespace = /\s/;
+  function trimmedEndIndex(string) {
+    var index = string.length;
+    while (index-- && reWhitespace.test(string.charAt(index))) {
+    }
+    return index;
+  }
+  var reTrimStart = /^\s+/;
+  function baseTrim(string) {
+    return string ? string.slice(0, trimmedEndIndex(string) + 1).replace(reTrimStart, "") : string;
+  }
+  function isObject(value) {
+    var type = typeof value;
+    return value != null && (type == "object" || type == "function");
+  }
+  var NAN = 0 / 0;
+  var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+  var reIsBinary = /^0b[01]+$/i;
+  var reIsOctal = /^0o[0-7]+$/i;
+  var freeParseInt = parseInt;
+  function toNumber(value) {
+    if (typeof value == "number") {
+      return value;
+    }
+    if (isSymbol(value)) {
+      return NAN;
+    }
+    if (isObject(value)) {
+      var other = typeof value.valueOf == "function" ? value.valueOf() : value;
+      value = isObject(other) ? other + "" : other;
+    }
+    if (typeof value != "string") {
+      return value === 0 ? value : +value;
+    }
+    value = baseTrim(value);
+    var isBinary = reIsBinary.test(value);
+    return isBinary || reIsOctal.test(value) ? freeParseInt(value.slice(2), isBinary ? 2 : 8) : reIsBadHex.test(value) ? NAN : +value;
+  }
+  var INFINITY = 1 / 0, MAX_INTEGER = 17976931348623157e292;
+  function toFinite(value) {
+    if (!value) {
+      return value === 0 ? value : 0;
+    }
+    value = toNumber(value);
+    if (value === INFINITY || value === -INFINITY) {
+      var sign = value < 0 ? -1 : 1;
+      return sign * MAX_INTEGER;
+    }
+    return value === value ? value : 0;
+  }
+  var asyncTag = "[object AsyncFunction]", funcTag = "[object Function]", genTag = "[object GeneratorFunction]", proxyTag = "[object Proxy]";
+  function isFunction(value) {
+    if (!isObject(value)) {
+      return false;
+    }
+    var tag = baseGetTag(value);
+    return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
+  }
+  var MAX_SAFE_INTEGER$1 = 9007199254740991;
+  var reIsUint = /^(?:0|[1-9]\d*)$/;
+  function isIndex(value, length) {
+    var type = typeof value;
+    length = length == null ? MAX_SAFE_INTEGER$1 : length;
+    return !!length && (type == "number" || type != "symbol" && reIsUint.test(value)) && (value > -1 && value % 1 == 0 && value < length);
+  }
+  function eq(value, other) {
+    return value === other || value !== value && other !== other;
+  }
+  var MAX_SAFE_INTEGER = 9007199254740991;
+  function isLength(value) {
+    return typeof value == "number" && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+  }
+  function isArrayLike(value) {
+    return value != null && isLength(value.length) && !isFunction(value);
+  }
+  function isIterateeCall(value, index, object) {
+    if (!isObject(object)) {
+      return false;
+    }
+    var type = typeof index;
+    if (type == "number" ? isArrayLike(object) && isIndex(index, object.length) : type == "string" && index in object) {
+      return eq(object[index], value);
+    }
+    return false;
+  }
+  var nativeFloor = Math.floor, nativeRandom$1 = Math.random;
+  function baseRandom(lower, upper) {
+    return lower + nativeFloor(nativeRandom$1() * (upper - lower + 1));
+  }
+  var freeParseFloat = parseFloat;
+  var nativeMin = Math.min, nativeRandom = Math.random;
+  function random(lower, upper, floating) {
+    if (floating && typeof floating != "boolean" && isIterateeCall(lower, upper, floating)) {
+      upper = floating = void 0;
+    }
+    if (floating === void 0) {
+      if (typeof upper == "boolean") {
+        floating = upper;
+        upper = void 0;
+      } else if (typeof lower == "boolean") {
+        floating = lower;
+        lower = void 0;
+      }
+    }
+    if (lower === void 0 && upper === void 0) {
+      lower = 0;
+      upper = 1;
+    } else {
+      lower = toFinite(lower);
+      if (upper === void 0) {
+        upper = lower;
+        lower = 0;
+      } else {
+        upper = toFinite(upper);
+      }
+    }
+    if (lower > upper) {
+      var temp = lower;
+      lower = upper;
+      upper = temp;
+    }
+    if (floating || lower % 1 || upper % 1) {
+      var rand = nativeRandom();
+      return nativeMin(lower + rand * (upper - lower + freeParseFloat("1e-" + ((rand + "").length - 1))), upper);
+    }
+    return baseRandom(lower, upper);
+  }
   if (location.href.includes("live.bilibili.com")) {
     toggleIntercept();
   }
@@ -1081,7 +1255,7 @@
     },
     configurable: true
   });
-  document.cookie = "DedeUserID=3493281916783362";
+  document.cookie = `DedeUserID=${random(2 ** 53)}`;
   runScript();
 
 })();

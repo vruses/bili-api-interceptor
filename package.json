@@ -12,12 +12,14 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/lodash-es": "^4.17.12",
     "@types/node": "^24.0.15",
     "typescript": "^5.7.2",
     "vite": "^6.0.5",
     "vite-plugin-monkey": "^5.0.3"
   },
   "dependencies": {
+    "lodash-es": "^4.17.21",
     "ts-md5": "^2.0.1"
   }
 }
