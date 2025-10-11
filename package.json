@@ -1,25 +1,30 @@
 {
   "name": "bili-api-interceptor",
-  "private": true,
+  "type": "module",
   "version": "1.2.0",
-  "main": "index.js",
+  "private": true,
   "author": "<vurses@qq.com>",
   "license": "MIT",
-  "type": "module",
+  "main": "index.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "@types/lodash-es": "^4.17.12",
-    "@types/node": "^24.0.15",
-    "typescript": "^5.7.2",
-    "vite": "^6.0.5",
-    "vite-plugin-monkey": "^5.0.3"
+    "preview": "vite preview",
+    "format": "biome format --write",
+    "lint": "biome check",
+    "lint:fix": "biome check --fix"
   },
   "dependencies": {
     "lodash-es": "^4.17.21",
     "ts-md5": "^2.0.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.5",
+    "@types/lodash-es": "^4.17.12",
+    "@types/node": "^24.0.15",
+    "lefthook": "^1.13.6",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5",
+    "vite-plugin-monkey": "^5.0.3"
   }
 }

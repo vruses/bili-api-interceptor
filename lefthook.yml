@@ -1,0 +1,6 @@
+pre-commit:
+  commands:
+    check:
+      run: yarn lint --no-errors-on-unmatched --files-ignore-unknown=true --colors=off {staged_files}
+      stage_fixed: true
+

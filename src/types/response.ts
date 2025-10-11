@@ -1,26 +1,26 @@
 export interface ResultType<T> {
-  code: number;
-  message: string;
-  ttl: number;
-  data: T;
+  code: number
+  message: string
+  ttl: number
+  data: T
 }
 export interface PlayerUserInfo {
   // 播放器里用到的用户数据,省去了其它没有用到的属性
   // 为0则未登录
-  login_mid: number;
+  login_mid: number
   // 用户等级信息
   level_info: {
-    current_level: number;
-  };
+    current_level: number
+  }
 }
 
 export interface HistoryListRes {
   cursor: {
-    business: string;
-    max: number;
-    ps: number;
-    view_at: number;
-  };
-  list: Array<any>;
-  tab: Array<{ type: string; name: string }>;
+    business: string
+    max: number
+    ps: number
+    view_at: number
+  }
+  list: Array<unknown>
+  tab: Array<{ type: string; name: string }>
 }

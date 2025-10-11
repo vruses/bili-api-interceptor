@@ -5,34 +5,34 @@
  */
 declare global {
   interface Window {
-    __ajaxHooker?: AjaxHookerGlobal;
+    __ajaxHooker?: AjaxHookerGlobal
     secsdk?: {
       csrf?: {
-        nativeXMLHttpRequestSetRequestHeader?: Function;
-        nativeXMLHttpRequestOpen?: Function;
-        nativeXMLHttpRequestSend?: Function;
-      };
-    };
+        nativeXMLHttpRequestSetRequestHeader?: Function
+        nativeXMLHttpRequestOpen?: Function
+        nativeXMLHttpRequestSend?: Function
+      }
+    }
   }
 }
 
 /**
  * 请求类型
  */
-export type RequestType = "xhr" | "fetch";
+export type RequestType = 'xhr' | 'fetch'
 
 /**
  * 过滤器配置
  */
 export interface FilterConfig {
   /** 请求类型过滤 */
-  type?: RequestType;
+  type?: RequestType
   /** URL 过滤，支持字符串包含匹配或正则表达式 */
-  url?: string | RegExp;
+  url?: string | RegExp
   /** HTTP 方法过滤 */
-  method?: string;
+  method?: string
   /** 是否异步请求过滤 */
-  async?: boolean;
+  async?: boolean
 }
 
 /**
@@ -40,23 +40,23 @@ export interface FilterConfig {
  */
 export interface AjaxRequest {
   /** 请求类型 */
-  type: RequestType;
+  type: RequestType
   /** 请求 URL */
-  url: string;
+  url: string
   /** HTTP 方法 */
-  method: string;
+  method: string
   /** 是否中止请求 */
-  abort: boolean;
+  abort: boolean
   /** 请求头 */
-  headers: Record<string, string>;
+  headers: Record<string, string>
   /** 请求数据 */
-  data: any;
+  data: any
   /** 响应处理函数 */
-  response: ResponseHandler | null;
+  response: ResponseHandler | null
   /** 是否异步 */
-  async: boolean;
+  async: boolean
   /** 是否携带身份认证如cookie */
-  credentials: "omit" | "include" | "same-origin";
+  credentials: 'omit' | 'include' | 'same-origin'
 }
 
 /**
@@ -64,17 +64,17 @@ export interface AjaxRequest {
  */
 export interface XhrResponse {
   /** 最终 URL */
-  finalUrl: string;
+  finalUrl: string
   /** 状态码 */
-  status: number;
+  status: number
   /** 响应头 */
-  responseHeaders: Record<string, string>;
+  responseHeaders: Record<string, string>
   /** 响应内容 */
-  response?: any;
+  response?: any
   /** 响应文本 */
-  responseText?: string;
+  responseText?: string
   /** 响应 XML */
-  responseXML?: Document | null;
+  responseXML?: Document | null
 }
 
 /**
@@ -82,34 +82,32 @@ export interface XhrResponse {
  */
 export interface FetchResponse {
   /** 最终 URL */
-  finalUrl: string;
+  finalUrl: string
   /** 状态码 */
-  status: number;
+  status: number
   /** 响应头 */
-  responseHeaders: Record<string, string>;
+  responseHeaders: Record<string, string>
   /** arrayBuffer 数据 */
-  arrayBuffer?: ArrayBuffer;
+  arrayBuffer?: ArrayBuffer
   /** blob 数据 */
-  blob?: Blob;
+  blob?: Blob
   /** formData 数据 */
-  formData?: FormData;
+  formData?: FormData
   /** JSON 数据 */
-  json?: any;
+  json?: any
   /** 文本数据 */
-  text?: string;
+  text?: string
 }
 
 /**
  * 响应处理函数类型
  */
-export type ResponseHandler = (
-  response: XhrResponse | FetchResponse
-) => void | Promise<void>;
+export type ResponseHandler = (response: XhrResponse | FetchResponse) => void | Promise<void>
 
 /**
  * 钩子函数类型
  */
-export type HookFunction = (request: AjaxRequest) => void | Promise<void>;
+export type HookFunction = (request: AjaxRequest) => void | Promise<void>
 
 /**
  * ajaxHooker 实例接口
@@ -120,26 +118,26 @@ export interface AjaxHookerInstance {
    * @param fn 钩子函数，接收请求对象作为参数
    * @returns 无返回值
    */
-  hook: (fn: HookFunction) => void;
+  hook: (fn: HookFunction) => void
 
   /**
    * 设置过滤器
    * @param filters 过滤器配置数组
    * @returns 无返回值
    */
-  filter: (filters: FilterConfig[]) => void;
+  filter: (filters: FilterConfig[]) => void
 
   /**
    * 保护钩子不被覆盖
    * @returns 无返回值
    */
-  protect: () => void;
+  protect: () => void
 
   /**
    * 移除钩子
    * @returns 无返回值
    */
-  unhook: () => void;
+  unhook: () => void
 }
 
 /**
@@ -147,21 +145,21 @@ export interface AjaxHookerInstance {
  */
 export interface AjaxHookerGlobal {
   /** 版本号 */
-  version: string;
+  version: string
   /** 伪造的 XMLHttpRequest */
-  fakeXHR: typeof XMLHttpRequest;
+  fakeXHR: typeof XMLHttpRequest
   /** 伪造的 fetch */
-  fakeFetch: typeof fetch;
+  fakeFetch: typeof fetch
   /** 伪造的 Response.prototype.clone */
-  fakeFetchClone: () => Response;
+  fakeFetchClone: () => Response
   /** 原始 XMLHttpRequest */
-  realXHR: typeof XMLHttpRequest;
+  realXHR: typeof XMLHttpRequest
   /** 原始 fetch */
-  realFetch: typeof fetch;
+  realFetch: typeof fetch
   /** 原始 Response.prototype.clone */
-  realFetchClone: () => Response;
+  realFetchClone: () => Response
   /** 钩子实例集合 */
-  hookInsts: Set<HookInstance>;
+  hookInsts: Set<HookInstance>
 }
 
 /**
@@ -169,9 +167,9 @@ export interface AjaxHookerGlobal {
  */
 export interface HookInstance {
   /** 钩子函数数组 */
-  hookFns: HookFunction[];
+  hookFns: HookFunction[]
   /** 过滤器数组 */
-  filters: FilterConfig[];
+  filters: FilterConfig[]
 }
 
 /**
@@ -179,45 +177,45 @@ export interface HookInstance {
  */
 export interface ExtendedXMLHttpRequest extends XMLHttpRequest {
   __ajaxHooker?: {
-    originalXhr: XMLHttpRequest;
-    proxyXhr: XMLHttpRequest;
-    resThenable: any;
-    proxyProps: Record<string, any>;
-    proxyEvents: Record<string, any>;
-    request?: AjaxRequest;
-    openArgs?: any[];
-  };
+    originalXhr: XMLHttpRequest
+    proxyXhr: XMLHttpRequest
+    resThenable: any
+    proxyProps: Record<string, any>
+    proxyEvents: Record<string, any>
+    request?: AjaxRequest
+    openArgs?: any[]
+  }
 }
 
 /**
  * ajaxHooker 主函数
  * @returns ajaxHooker 实例
  */
-declare const ajaxHooker: AjaxHookerInstance;
+declare const ajaxHooker: AjaxHookerInstance
 
-export default ajaxHooker;
+export default ajaxHooker
 
 // 使用示例的类型定义
 export interface UsageExamples {
   /**
    * 基础钩子使用示例
    */
-  basicHook: () => void;
+  basicHook: () => void
 
   /**
    * 过滤器使用示例
    */
-  filterUsage: () => void;
+  filterUsage: () => void
 
   /**
    * 响应修改示例
    */
-  responseModification: () => void;
+  responseModification: () => void
 
   /**
    * 请求拦截示例
    */
-  requestIntercept: () => void;
+  requestIntercept: () => void
 }
 
 /**
@@ -227,20 +225,20 @@ export namespace HookPatterns {
   /**
    * 日志记录钩子
    */
-  export type Logger = (request: AjaxRequest) => void;
+  export type Logger = (request: AjaxRequest) => void
 
   /**
    * 请求修改钩子
    */
-  export type RequestModifier = (request: AjaxRequest) => void | Promise<void>;
+  export type RequestModifier = (request: AjaxRequest) => void | Promise<void>
 
   /**
    * 响应拦截钩子
    */
-  export type ResponseInterceptor = (request: AjaxRequest) => void;
+  export type ResponseInterceptor = (request: AjaxRequest) => void
 
   /**
    * 条件钩子
    */
-  export type ConditionalHook = (request: AjaxRequest) => boolean;
+  export type ConditionalHook = (request: AjaxRequest) => boolean
 }
