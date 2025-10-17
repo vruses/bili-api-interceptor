@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "**.ts"
+      - ".github/workflows/**"
+      - ".vscode/**"
+  pull_request:
+    branches:
+      - master
+    paths:
+      - "**.ts"
+      - ".github/workflows/**"
+      - ".vscode/**"
+  workflow_dispatch:
+
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: true
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
