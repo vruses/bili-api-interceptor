@@ -1,9 +1,19 @@
 import { historyList, mockUserInfo, web_key_urls } from '@/constants'
+import { fetchSubtitle } from '@/core/useFetch'
 import type { HistoryListRes, PlayerUserInfo, ResultType } from '@/types/response'
 import type { FetchResponse, XhrResponse } from '@/utils/ajax/ajax-hooker'
 import ajaxHooker from '@/utils/ajax/ajax-hooker'
 import { encWbi } from '@/utils/wbi-sign'
 import { useWebKey } from '@/utils/web-key'
+
+const pendingSubtitle = new Promise((res) => {
+  document.onreadystatechange = () => {
+    if (document.readyState === 'complete') {
+      const pendingSubtitle = window.vd?.aid && window.vd?.cid ? fetchSubtitle(window.vd?.aid, window.vd?.cid) : {}
+      res(pendingSubtitle)
+    }
+  }
+})
 
 function runScript() {
   const img_key = useWebKey(web_key_urls.img_key_url)
@@ -34,11 +44,13 @@ function runScript() {
     }
     // 播放器请求的用户信息，需要返回登录状态
     if (request.url.includes('/x/player/wbi/v2')) {
-      request.response = (res: XhrResponse) => {
+      request.response = async (res: XhrResponse) => {
         if (!res?.responseText) return
         const playerResponse: ResultType<PlayerUserInfo> = JSON.parse(res.responseText)
         playerResponse.data.login_mid = Math.floor(Math.random() * 100000)
         playerResponse.data.level_info.current_level = 6
+        playerResponse.data.subtitle = await pendingSubtitle
+
         res.responseText = JSON.stringify(playerResponse)
       }
     }

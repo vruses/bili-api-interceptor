@@ -12,6 +12,7 @@ export interface PlayerUserInfo {
   level_info: {
     current_level: number
   }
+  subtitle: unknown
 }
 
 export interface HistoryListRes {
@@ -23,4 +24,35 @@ export interface HistoryListRes {
   }
   list: Array<unknown>
   tab: Array<{ type: string; name: string }>
+}
+
+export interface Subtitles {
+  closed: boolean
+  dm_seg: {
+    page_size: number
+    total: number
+  }
+  flag: {
+    rec_flag: number
+    rec_text: string
+    rec_switch: number
+  }
+  subtitle: {
+    lan: string
+    lan_doc: string
+    subtitles: {
+      id: number
+      id_str: string
+      lan: string
+      lan_doc: string
+      subtitle_url: string
+      type: number
+      ai_type: number
+      ai_status: number
+      role: number
+      video_detext: boolean
+      video_mouth_shape_change: boolean
+      subtitle_height: null
+    }[]
+  }
 }
