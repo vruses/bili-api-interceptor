@@ -1,7 +1,7 @@
 {
   "name": "bili-api-interceptor",
   "type": "module",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "private": true,
   "author": "<vurses@qq.com>",
   "license": "MIT",
@@ -29,6 +29,7 @@
     "@types/node": "^24.0.15",
     "lefthook": "^1.13.6",
     "standard-version": "^9.5.0",
+    "typescript": "^5.9.3",
     "vite": "^6.0.5",
     "vite-plugin-monkey": "^5.0.3"
   }
