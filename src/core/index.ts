@@ -6,6 +6,7 @@ import ajaxHooker from '@/utils/ajax/ajax-hooker'
 import { encWbi } from '@/utils/wbi-sign'
 import { useWebKey } from '@/utils/web-key'
 
+// 页面加载完成立即先获取一次字幕
 const pendingSubtitle = new Promise((res) => {
   document.onreadystatechange = () => {
     if (document.readyState === 'complete') {
