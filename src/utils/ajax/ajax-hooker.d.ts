@@ -38,7 +38,25 @@ export interface FilterConfig {
 /**
  * 请求对象接口
  */
-export interface AjaxRequest {
+export type AjaxRequest<T extends RequestType = RequestType> = T extends 'xhr'
+  ? XhrRequest
+  : T extends 'fetch'
+    ? FetchRequest
+    : BaseRequest
+
+interface XhrRequest extends BaseRequest {
+  type: 'xhr'
+  response: ResponseHandler<'xhr'> | null
+}
+
+interface FetchRequest extends BaseRequest {
+  type: 'fetch'
+  response: ResponseHandler<'fetch'> | null
+}
+/**
+ * 通用请求属性
+ */
+export interface BaseRequest {
   /** 请求类型 */
   type: RequestType
   /** 请求 URL */
@@ -51,8 +69,6 @@ export interface AjaxRequest {
   headers: Record<string, string>
   /** 请求数据 */
   data: any
-  /** 响应处理函数 */
-  response: ResponseHandler | null
   /** 是否异步 */
   async: boolean
   /** 是否携带身份认证如cookie */
@@ -102,7 +118,7 @@ export interface FetchResponse {
 /**
  * 响应处理函数类型
  */
-export type ResponseHandler = (response: XhrResponse | FetchResponse) => void | Promise<void>
+export type ResponseHandler<T> = (response: T extends 'fetch' ? FetchResponse : XhrResponse) => void | Promise<void>
 
 /**
  * 钩子函数类型
