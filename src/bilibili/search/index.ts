@@ -1,9 +1,6 @@
-import ajaxHooker from '@/utils/ajax/ajax-hooker'
+import onRequest from '@/utils/ajax'
+import { useSearch } from './hook'
 
-ajaxHooker.hook((request) => {
-  // 纠正b站搜索页的热搜接口拼接损坏的问题
-  if (request.url.includes('/api.bilibili.comx/web-interface/search')) {
-    request.url = request.url.replace(/\.com(?!\/)/, '.com/')
-  }
-})
+onRequest(useSearch)
+
 export default {}

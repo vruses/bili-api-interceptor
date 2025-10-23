@@ -18,5 +18,5 @@ export async function fetchSubtitle(aid: number, cid: number) {
       })
       return result.data.subtitle
     })
-    .catch(() => void 0)
+    .catch(() => null)
 }
