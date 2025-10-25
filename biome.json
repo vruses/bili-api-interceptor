@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["**", "!src/utils/ajax/*"]
+    "includes": ["**", "!src/utils/ajax/ajax-hooker.*"]
   },
   "linter": {
     "enabled": true,
