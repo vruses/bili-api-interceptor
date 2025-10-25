@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/vruses/bili-api-interceptor/compare/v1.2.6...v2.0.0) (2025-10-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* write hooks for search, navigation, history, and video
+* code structure
+
+### Features
+
+* support subtitles on initial and subsequent video loads ([f146c85](https://github.com/vruses/bili-api-interceptor/commit/f146c85923875745761bfe6a9027934b62c637f9))
+
+
+### Bug Fixes
+
+* correct conditional checks in useNav and useHistory hooks ([f4e3b2c](https://github.com/vruses/bili-api-interceptor/commit/f4e3b2c3b5cb086f755c776489f291d993c3b3e6))
+* resolve type inference issue in ajax hooker ([cf134b9](https://github.com/vruses/bili-api-interceptor/commit/cf134b9ed3ab838ae7d18e40a1b8d928cb8bae5f))
+
+
+* code structure ([873de61](https://github.com/vruses/bili-api-interceptor/commit/873de61a79a8f0be01ab8fd5859d0080aefd87f6))
+* write hooks for search, navigation, history, and video ([efdd81c](https://github.com/vruses/bili-api-interceptor/commit/efdd81c22f54357bc111b27f4b7d4dc6616404bb))
+
 ### [1.2.6](https://github.com/vruses/bili-api-interceptor/compare/v1.2.5...v1.2.6) (2025-10-19)
 
 
