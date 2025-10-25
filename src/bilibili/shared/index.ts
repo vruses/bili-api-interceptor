@@ -1,5 +1,5 @@
 import onRequest from '@/utils/ajax'
-import { useNav } from './hook'
+import { useNav } from './hooks'
 
 onRequest(useNav)
 

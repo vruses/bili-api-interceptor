@@ -1,5 +1,5 @@
 import onRequest from '@/utils/ajax'
-import { useSearch } from './hook'
+import { useSearch } from './hooks'
 
 onRequest(useSearch)
 

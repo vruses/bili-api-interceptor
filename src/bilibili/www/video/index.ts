@@ -1,7 +1,7 @@
 import { onDocInteractive } from '@/core/lifecycle'
 import type { Subtitles } from '@/types/response'
 import onRequest from '@/utils/ajax'
-import { usePlayer, usePlayurl, useReply } from './hook'
+import { usePlayer, usePlayurl, useReply } from './hooks'
 
 import { fetchSubtitle } from './useFetch'
 
