@@ -1,9 +1,10 @@
+import { fetchSubtitle } from '@/bilibili/www/video/useFetch'
 import { img_key, sub_key } from '@/constants'
 import type { PlayerUserInfo, ResultType, Subtitles } from '@/types/response'
 import type { RequestFn } from '@/utils/ajax'
 import { encWbi } from '@/utils/wbi-sign'
 
-type UsePlayer = (pendingSubtitle: Promise<Subtitles['subtitle'] | null>) => RequestFn
+type UsePlayer = (subtitleCache: { current: Promise<Subtitles['subtitle'] | null> }) => RequestFn
 
 /**
  * @description 拦截获取视频评论、评论的评论列表请求，解除评论获取的数量限制
@@ -16,14 +17,22 @@ export const useReply: RequestFn = (request) => {
 
 /**
  * @description 控制播放器请求的用户信息始终为登录状态
- * @param pendingSubtitle 页面首次加载时或者每次请求时等待的字幕接口
+ * @param subtitleCache 页面首次加载时或者每次请求时等待的字幕接口
  * @returns ajaxhooker执行的回调
  */
-export const usePalyer: UsePlayer = (pendingSubtitle) => {
+export const usePlayer: UsePlayer = (subtitleCache) => {
+  // 大部分用户只会在视频首次加载观看后就关闭页面，除了分p视频的场景会有切换需求，这个速度优化是有意义的
+  let isFirstRequest = true
+
   return (request) => {
     if (!request.url.includes('/x/player/wbi/v2')) return
     // response type narrowing
     if (request.type === 'fetch') return
+    // get请求从url里获取请求参数
+    const payload = Object.fromEntries(new URL('https:' + request.url).searchParams.entries()) as unknown as {
+      aid: number
+      cid: number
+    }
     request.response = async (res) => {
       if (!res?.responseText) return
       const playerResponse: ResultType<PlayerUserInfo> = JSON.parse(res.responseText)
@@ -32,8 +41,14 @@ export const usePalyer: UsePlayer = (pendingSubtitle) => {
       // 等级不同ui显示不同
       playerResponse.data.level_info.current_level = 6
       // 等待字幕接口加载
-      playerResponse.data.subtitle = await pendingSubtitle
-
+      if (isFirstRequest) {
+        // 首次加载
+        playerResponse.data.subtitle = await subtitleCache.current
+        isFirstRequest = false
+      } else {
+        // 视频切换加载
+        playerResponse.data.subtitle = await fetchSubtitle(payload.aid, payload.cid)
+      }
       res.responseText = JSON.stringify(playerResponse)
     }
   }
