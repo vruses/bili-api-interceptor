@@ -6,9 +6,10 @@ export interface PlayerUserInfo {
   level_info: {
     current_level: number
   }
-  subtitle: unknown
+  subtitle: Subtitles['subtitle'] | null
 }
 
+/**字幕 */
 export interface Subtitles {
   closed: boolean
   dm_seg: {
