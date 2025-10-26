@@ -12,8 +12,8 @@ const subtitleCache: { current: SubtitleCache } = {
 
 // window.vd挂载完成后至player请求之前立即先获取一次字幕
 onDocInteractive(() => {
-  subtitleCache.current =
-    window.vd?.aid && window.vd?.cid ? fetchSubtitle(window.vd.aid, window.vd.cid) : Promise.resolve(null)
+  const { aid, cid } = window.vd ?? {}
+  subtitleCache.current = aid && cid ? fetchSubtitle(aid, cid) : Promise.resolve(null)
 })
 // 解决未登录情况下：评论只展示三条，播放器显示未登录且画质低的问题
 onRequest(useReply, usePlayer(subtitleCache), usePlayurl)

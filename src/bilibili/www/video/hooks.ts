@@ -33,6 +33,7 @@ export const usePlayer: UsePlayer = (subtitleCache) => {
       aid: number
       cid: number
     }
+    subtitleCache.current = isFirstRequest ? subtitleCache.current : fetchSubtitle(payload.aid, payload.cid)
     request.response = async (res) => {
       if (!res?.responseText) return
       const playerResponse: ResultType<PlayerUserInfo> = JSON.parse(res.responseText)
@@ -41,15 +42,10 @@ export const usePlayer: UsePlayer = (subtitleCache) => {
       // 等级不同ui显示不同
       playerResponse.data.level_info.current_level = 6
       // 等待字幕接口加载
-      if (isFirstRequest) {
-        // 首次加载
-        playerResponse.data.subtitle = await subtitleCache.current
-        isFirstRequest = false
-      } else {
-        // 视频切换加载
-        playerResponse.data.subtitle = await fetchSubtitle(payload.aid, payload.cid)
-      }
+      playerResponse.data.subtitle = await subtitleCache.current
       res.responseText = JSON.stringify(playerResponse)
+      // 首次加载后
+      if (isFirstRequest) isFirstRequest = false
     }
   }
 }
