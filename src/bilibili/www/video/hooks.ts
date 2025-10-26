@@ -1,8 +1,9 @@
 import { fetchSubtitle } from '@/bilibili/www/video/useFetch'
 import { img_key, sub_key } from '@/constants'
-import type { PlayerUserInfo, ResultType, Subtitles } from '@/types/response'
+import type { ResultType } from '@/types/response'
 import type { RequestFn } from '@/utils/ajax'
 import { encWbi } from '@/utils/wbi-sign'
+import type { PlayerUserInfo, Subtitles } from './model/types'
 
 type UsePlayer = (subtitleCache: { current: Promise<Subtitles['subtitle'] | null> }) => RequestFn
 

@@ -1,6 +1,5 @@
-import { historyList } from '@/constants'
-import type { HistoryListRes, ResultType } from '@/types/response'
 import type { RequestFn } from '@/utils/ajax'
+import { historyListResult } from './model/constants'
 
 /**
  * @description 历史观看记录
@@ -10,7 +9,6 @@ export const useHistory: RequestFn = (request) => {
   if (request.type === 'xhr') return
   request.response = (res) => {
     if (!res?.json) return
-    const historyListRes: ResultType<HistoryListRes> = historyList
-    res.json = historyListRes
+    res.json = historyListResult
   }
 }

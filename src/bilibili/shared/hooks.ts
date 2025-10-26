@@ -1,5 +1,5 @@
-import { mockUserInfo } from '@/constants'
 import type { RequestFn } from '@/utils/ajax'
+import { mockUserInfoResult } from './model/constants'
 
 /**
  * @description 伪造顶部nav的用户信息与登录状态
@@ -9,13 +9,13 @@ export const useNav: RequestFn = (request) => {
   // pc端登录
   if (request.type === 'xhr') {
     request.response = (res) => {
-      res.responseText = JSON.stringify(mockUserInfo)
+      res.responseText = JSON.stringify(mockUserInfoResult)
     }
   }
   // 移动端登录
   if (request.type === 'fetch') {
     request.response = (res) => {
-      res.json = mockUserInfo
+      res.json = mockUserInfoResult
     }
   }
 }

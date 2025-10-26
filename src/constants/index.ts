@@ -1,2 +1,1 @@
-export * from '@/constants/history'
-export * from '@/constants/user'
+export * from '@/constants/sign'
