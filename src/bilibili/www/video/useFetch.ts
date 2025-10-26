@@ -1,4 +1,5 @@
-import type { ResultType, Subtitles } from '@/types/response'
+import type { ResultType } from '@/types/response'
+import type { Subtitles } from './model/types'
 
 /**
  *

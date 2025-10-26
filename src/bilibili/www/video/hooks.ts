@@ -3,6 +3,7 @@ import { img_key, sub_key } from '@/constants'
 import type { ResultType } from '@/types/response'
 import type { RequestFn } from '@/utils/ajax'
 import { encWbi } from '@/utils/wbi-sign'
+import { relationResult } from './model/constants'
 import type { PlayerUserInfo, Subtitles } from './model/types'
 
 type UsePlayer = (subtitleCache: { current: Promise<Subtitles['subtitle'] | null> }) => RequestFn
@@ -72,5 +73,16 @@ export const usePlayurl: RequestFn = (request) => {
       },
       configurable: true,
     })
+  }
+}
+
+/**
+ * @description 返回与视频up主的关系，显示粉丝数
+ */
+export const useRelation: RequestFn = (request) => {
+  if (!request.url.includes('/x/web-interface/relation')) return
+  if (request.type === 'fetch') return
+  request.response = (res) => {
+    res.responseText = JSON.stringify(relationResult)
   }
 }

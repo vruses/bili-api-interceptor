@@ -1,6 +1,6 @@
 import { onDocInteractive } from '@/core/lifecycle'
 import onRequest from '@/utils/ajax'
-import { usePlayer, usePlayurl, useReply } from './hooks'
+import { usePlayer, usePlayurl, useRelation, useReply } from './hooks'
 import type { Subtitles } from './model/types'
 
 import { fetchSubtitle } from './useFetch'
@@ -16,6 +16,6 @@ onDocInteractive(() => {
   subtitleCache.current = aid && cid ? fetchSubtitle(aid, cid) : Promise.resolve(null)
 })
 // 解决未登录情况下：评论只展示三条，播放器显示未登录且画质低的问题
-onRequest(useReply, usePlayer(subtitleCache), usePlayurl)
+onRequest(useReply, usePlayer(subtitleCache), usePlayurl, useRelation)
 
 export default {}
