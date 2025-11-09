@@ -1,12 +1,10 @@
-import { fetchSubtitle } from '@/bilibili/www/video/useFetch'
 import { img_key, sub_key } from '@/constants'
 import type { ResultType } from '@/types/response'
 import type { RequestFn } from '@/utils/ajax'
 import { encWbi } from '@/utils/wbi-sign'
-import { relationResult } from './model/constants'
-import type { PlayerUserInfo, Subtitles } from './model/types'
-
-type UsePlayer = (subtitleCache: { current: Promise<Subtitles['subtitle'] | null> }) => RequestFn
+import type { PlayerUserInfo } from './model'
+import { relationResult } from './model'
+import { useSubtitle } from './useFetch'
 
 /**
  * @description 拦截获取视频评论、评论的评论列表请求，解除评论获取的数量限制
@@ -22,9 +20,10 @@ export const useReply: RequestFn = (request) => {
  * @param subtitleCache 页面首次加载时或者每次请求时等待的字幕接口
  * @returns ajaxhooker执行的回调
  */
-export const usePlayer: UsePlayer = (subtitleCache) => {
+export const usePlayer: () => RequestFn = () => {
   // 大部分用户只会在视频首次加载观看后就关闭页面，除了分p视频的场景会有切换需求，这个速度优化是有意义的
   let isFirstRequest = true
+  const { subtitleCache, setSubtitle } = useSubtitle()
 
   return (request) => {
     if (!request.url.includes('/x/player/wbi/v2')) return
@@ -35,7 +34,10 @@ export const usePlayer: UsePlayer = (subtitleCache) => {
       aid: number
       cid: number
     }
-    subtitleCache.current = isFirstRequest ? subtitleCache.current : fetchSubtitle(payload.aid, payload.cid)
+    if (!isFirstRequest) {
+      // 更新字幕数据
+      setSubtitle(payload.aid, payload.cid)
+    }
     request.response = async (res) => {
       if (!res?.responseText) return
       const playerResponse: ResultType<PlayerUserInfo> = JSON.parse(res.responseText)

@@ -1,3 +1,4 @@
+import { onDocInteractive } from '@/core/lifecycle'
 import type { ResultType } from '@/types/response'
 import type { Subtitles } from './model/types'
 
@@ -20,4 +21,34 @@ export async function fetchSubtitle(aid: number, cid: number) {
       return result.data.subtitle
     })
     .catch(() => null)
+}
+
+type SubtitleCache = Subtitles['subtitle'] | null
+
+/**
+ * subtitle缓存与更新subtitle
+ */
+export function useSubtitle() {
+  const subtitleCache = {
+    current: new Promise<SubtitleCache>((resolve) => {
+      onDocInteractive(() => {
+        // window.vd挂载完成后至player请求之前立即先获取一次字幕
+        const { aid, cid } = window.vd ?? {}
+        aid && cid ? resolve(fetchSubtitle(aid, cid)) : resolve(null)
+      })
+    }),
+  }
+
+  // 动态更新
+  function setSubtitle(aid?: number, cid?: number) {
+    if (aid && cid) {
+      subtitleCache.current = fetchSubtitle(aid, cid)
+    } else {
+      subtitleCache.current = Promise.resolve(null)
+    }
+  }
+  return {
+    subtitleCache,
+    setSubtitle,
+  }
 }
