@@ -2,8 +2,8 @@ import { img_key, sub_key } from '@/constants'
 import type { ResultType } from '@/types/response'
 import type { RequestFn } from '@/utils/ajax'
 import { encWbi } from '@/utils/wbi-sign'
-import type { PlayerUserInfo } from './model'
-import { relationResult } from './model'
+import { relationResult } from './model/constants'
+import type { PlayerUserInfo } from './model/types'
 import { useSubtitle } from './useFetch'
 
 /**
