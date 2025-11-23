@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.2](https://github.com/vruses/bili-api-interceptor/compare/v2.0.1...v2.0.2) (2025-11-23)
+
+
+### Bug Fixes
+
+* fix typecheck ([931777d](https://github.com/vruses/bili-api-interceptor/commit/931777d97ec9aea720c9d6d780db0023bb4978af))
+
 ### [2.0.1](https://github.com/vruses/bili-api-interceptor/compare/v2.0.0...v2.0.1) (2025-11-23)
 
 
