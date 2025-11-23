@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.3](https://github.com/vruses/bili-api-interceptor/compare/v2.0.2...v2.0.3) (2025-11-23)
+
+
+### Bug Fixes
+
+* add missing space module import ([4e079f1](https://github.com/vruses/bili-api-interceptor/commit/4e079f116be2fa4c3c3fa07e15d7225dbd0e9ad7))
+
 ### [2.0.2](https://github.com/vruses/bili-api-interceptor/compare/v2.0.1...v2.0.2) (2025-11-23)
 
 
