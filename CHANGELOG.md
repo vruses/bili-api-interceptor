@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.1](https://github.com/vruses/bili-api-interceptor/compare/v2.0.0...v2.0.1) (2025-11-23)
+
+
+### Bug Fixes
+
+* 修复进入 up 主动态无限刷新的 bug ([890bfa5](https://github.com/vruses/bili-api-interceptor/commit/890bfa56602a5bb67df70bf76edf1c4ad5f47e0b)), closes [#1](https://github.com/vruses/bili-api-interceptor/issues/1)
+* display follower's number ([079511a](https://github.com/vruses/bili-api-interceptor/commit/079511aa0489075c57d71fe9bb2315fad100cb34))
+* fix subtitle type ([c04be7e](https://github.com/vruses/bili-api-interceptor/commit/c04be7e784478ccf043599cf41aea6cf7b7bb265))
+
 ## [2.0.0](https://github.com/vruses/bili-api-interceptor/compare/v1.2.6...v2.0.0) (2025-10-25)
 
 
