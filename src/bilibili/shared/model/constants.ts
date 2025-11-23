@@ -90,7 +90,7 @@ const mockUserInfo = {
     },
   },
   wallet: {
-    mid: 700756870,
+    mid: 3493281916783362,
     bcoin_balance: 0,
     coupon_balance: 0,
     coupon_due_time: 0,
