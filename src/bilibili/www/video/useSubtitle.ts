@@ -28,7 +28,7 @@ type SubtitleCache = Subtitles['subtitle'] | null
 /**
  * subtitle缓存与更新subtitle
  */
-export function useSubtitle() {
+export default function useSubtitle() {
   const subtitleCache = {
     current: new Promise<SubtitleCache>((resolve) => {
       onDocInteractive(() => {

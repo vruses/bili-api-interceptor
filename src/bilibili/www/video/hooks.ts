@@ -4,7 +4,7 @@ import type { RequestFn } from '@/utils/ajax'
 import { encWbi } from '@/utils/wbi-sign'
 import { relationResult } from './model/constants'
 import type { PlayerUserInfo } from './model/types'
-import { useSubtitle } from './useFetch'
+import useSubtitle from './useSubtitle'
 
 /**
  * @description 拦截获取视频评论、评论的评论列表请求，解除评论获取的数量限制
@@ -34,10 +34,9 @@ export const usePlayer: () => RequestFn = () => {
       aid: number
       cid: number
     }
-    if (!isFirstRequest) {
-      // 更新字幕数据
-      setSubtitle(payload.aid, payload.cid)
-    }
+    // 更新字幕数据
+    if (!isFirstRequest) setSubtitle(payload.aid, payload.cid)
+    isFirstRequest = false
     request.response = async (res) => {
       if (!res?.responseText) return
       const playerResponse: ResultType<PlayerUserInfo> = JSON.parse(res.responseText)
@@ -48,8 +47,6 @@ export const usePlayer: () => RequestFn = () => {
       // 等待字幕接口加载
       playerResponse.data.subtitle = await subtitleCache.current
       res.responseText = JSON.stringify(playerResponse)
-      // 首次加载后
-      if (isFirstRequest) isFirstRequest = false
     }
   }
 }
