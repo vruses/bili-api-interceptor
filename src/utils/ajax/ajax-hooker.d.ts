@@ -78,11 +78,11 @@ interface XhrResponse<DataType = unknown> {
   /** 响应头 */
   responseHeaders: Record<string, string>
   /** 响应数据 (XHR) */
-  response: DataType | Promise<DataType>
+  response: DataType
   /** 响应文本 (XHR) */
-  responseText: string | Promise<string>
+  responseText: string
   /** 响应 XML (XHR) */
-  responseXML: Document | null | Promise<Document | null>
+  responseXML: Document | null
 }
 
 /** fetch 响应体 */
@@ -94,15 +94,15 @@ interface FetchResponse<DataType = unknown> {
   /** 响应头 */
   responseHeaders: Record<string, string>
   /** ArrayBuffer 响应数据 (Fetch) */
-  arrayBuffer: ArrayBuffer | Promise<ArrayBuffer>
+  arrayBuffer: ArrayBuffer
   /** Blob 响应数据 (Fetch) */
-  blob: Blob | Promise<Blob>
+  blob: Blob
   /** FormData 响应数据 (Fetch) */
-  formData: FormData | Promise<FormData>
+  formData: FormData
   /** JSON 响应数据 (Fetch) */
-  json: DataType | Promise<DataType>
+  json: DataType
   /** 文本响应数据 (Fetch) */
-  text: string | Promise<string>
+  text: string
 }
 
 /** 通用 Ajax 请求对象 */
