@@ -5,7 +5,7 @@
  */
 
 /** xhr 请求相关属性 */
-interface XhrRequest<DataType = unknown> {
+interface XhrRequest<Payload = unknown, Result = unknown> {
   /** 请求类型 */
   type: 'xhr'
   /** 请求 URL */
@@ -17,9 +17,9 @@ interface XhrRequest<DataType = unknown> {
   /** 请求头 */
   headers: Record<string, string>
   /** 请求数据 */
-  data: DataType
+  data: Payload
   /** 响应拦截函数 */
-  response: ((response: AjaxResponse<'xhr'>) => unknown) | null
+  response: ((response: XhrResponse<Result>) => unknown) | null
   /** 是否异步 */
   async: boolean
   /** 响应类型 (XHR) */
@@ -31,7 +31,7 @@ interface XhrRequest<DataType = unknown> {
 }
 
 /** fetch 请求体 */
-interface FetchRequest<DataType = unknown> {
+interface FetchRequest<Payload = unknown, Result = unknown> {
   /** 请求类型 */
   type: 'fetch'
   /** 请求 URL */
@@ -43,9 +43,9 @@ interface FetchRequest<DataType = unknown> {
   /** 请求头 */
   headers: Record<string, string>
   /** 请求负载 */
-  data: DataType
+  data: Payload
   /** 响应拦截函数 */
-  response: ((response: AjaxResponse<'fetch'>) => unknown) | null
+  response: ((response: FetchResponse<Result>) => unknown) | null
   /** 是否异步 */
   async: boolean
   /** 缓存模式 (Fetch) */
@@ -108,16 +108,10 @@ interface FetchResponse<DataType = unknown> {
 /** 通用 Ajax 请求对象 */
 type BaseAjaxRequest = FetchRequest | XhrRequest
 
-/** 通用 Ajax 响应对象 */
-type BaseAjaxResponse = FetchResponse | XhrResponse
-
 /** 请求对象泛型 */
-type AjaxRequest<T extends 'xhr' | 'fetch', DataType> = T extends 'xhr' ? XhrRequest<DataType> : FetchRequest<DataType>
-
-/** 响应对象泛型 */
-type AjaxResponse<T extends 'xhr' | 'fetch', DataType> = T extends 'xhr'
-  ? XhrResponse<DataType>
-  : FetchResponse<DataType>
+type AjaxRequest<T extends 'xhr' | 'fetch', Payload, Result> = T extends 'xhr'
+  ? XhrRequest<Payload, Result>
+  : FetchRequest<Payload, Result>
 
 /**
  * 过滤器配置
@@ -174,11 +168,14 @@ export default ajaxHooker
 
 /** ajax-hooker 相关接口 */
 export namespace Ajax {
-  /** 请求体 */
-  export type Request<T, DataType> = AjaxRequest<T, DataType>
-  /** 响应体 */
-  export type Response<T, DataType> = AjaxResponse<T, DataType>
-  /**  */
+  /**
+   * 请求对象
+   * @template Type - 请求类型，支持 `'xhr'` 或 `'fetch'`
+   * @template Payload - 请求参数类型，默认为 `unknown`
+   * @template Result - 响应数据类型，默认为 `unknown`
+   */
+  export type Request<Type, Payload, Result> = AjaxRequest<Type, Payload, Result>
+
+  /** 通用请求对象 */
   export type BaseRequest = BaseAjaxRequest
-  export type BaseResponse = BaseAjaxResponse
 }
