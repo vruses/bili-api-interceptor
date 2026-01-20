@@ -9,7 +9,7 @@ import useSubtitle from './useSubtitle'
 /**
  * @description 拦截获取视频评论、评论的评论列表请求，解除评论获取的数量限制
  */
-export const useReply: RequestFn = (request) => {
+export const useReply: RequestFn<'fetch'> = (request) => {
   if (!request.url.includes('/x/v2/reply/wbi/main') && !request.url.includes('/x/v2/reply/reply')) return
 
   request.credentials = 'omit'
@@ -20,15 +20,13 @@ export const useReply: RequestFn = (request) => {
  * @param subtitleCache 页面首次加载时或者每次请求时等待的字幕接口
  * @returns ajaxhooker执行的回调
  */
-export const usePlayer: () => RequestFn = () => {
+export const usePlayer: () => RequestFn<'xhr'> = () => {
   // 大部分用户只会在视频首次加载观看后就关闭页面，除了分p视频的场景会有切换需求，这个速度优化是有意义的
   let isFirstRequest = true
   const { subtitleCache, setSubtitle } = useSubtitle()
 
   return (request) => {
     if (!request.url.includes('/x/player/wbi/v2')) return
-    // response type narrowing
-    if (request.type === 'fetch') return
     // get请求从url里获取请求参数
     const payload = Object.fromEntries(new URL('https:' + request.url).searchParams.entries()) as unknown as {
       aid: number
@@ -54,7 +52,7 @@ export const usePlayer: () => RequestFn = () => {
 /**
  * @description 获取更高质量视频的cdn地址
  */
-export const usePlayurl: RequestFn = (request) => {
+export const usePlayurl: RequestFn<'xhr'> = (request) => {
   // inject custom qsParams to fetch higher-quality CDN video
   if (!request.url.includes('api.bilibili.com/x/player/wbi/playurl')) return
   // Remove w_rid & wts, set try_look=1 and qn=80, then re-WbiSign
@@ -63,12 +61,11 @@ export const usePlayurl: RequestFn = (request) => {
   Reflect.set(qsParams, 'try_look', 1)
   const query = encWbi(qsParams, img_key, sub_key)
   request.url = `//api.bilibili.com/x/player/wbi/playurl?${query}`
-  if (request.type === 'fetch') return
   // 还原window.__playinfo__对象
   request.response = (res) => {
     Object.defineProperty(window, '__playinfo__', {
       get() {
-        return JSON.parse(res?.responseText ?? '{}')
+        return JSON.parse(res.responseText ?? '{}')
       },
       configurable: true,
     })
@@ -78,9 +75,8 @@ export const usePlayurl: RequestFn = (request) => {
 /**
  * @description 返回与视频up主的关系，显示粉丝数
  */
-export const useRelation: RequestFn = (request) => {
+export const useRelation: RequestFn<'xhr'> = (request) => {
   if (!request.url.includes('/x/web-interface/relation')) return
-  if (request.type === 'fetch') return
   request.response = (res) => {
     res.responseText = JSON.stringify(relationResult)
   }
