@@ -36,10 +36,11 @@ export const usePlayer: () => RequestFn<'xhr'> = () => {
     if (!isFirstRequest) setSubtitle(payload.aid, payload.cid)
     isFirstRequest = false
     request.response = async (res) => {
-      if (!res?.responseText) return
       const playerResponse: ResultType<PlayerUserInfo> = JSON.parse(res.responseText)
       // 认定登录状态的字段
       playerResponse.data.login_mid = Math.floor(Math.random() * 100000)
+      // 不需要登录即可使用字幕功能，此字段控制字幕功能 ui 显示
+      playerResponse.data.need_login_subtitle = false
       // 等级不同ui显示不同
       playerResponse.data.level_info.current_level = 6
       // 等待字幕接口加载
