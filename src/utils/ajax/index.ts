@@ -1,9 +1,14 @@
-import ajaxHooker, { type AjaxRequest } from '@/utils/ajax/ajax-hooker'
+import ajaxHooker, { type Ajax } from '@/utils/ajax/ajax-hooker'
 
 /**
- * ajaxhooker回调
+ * ajaxhooker 钩子函数类型
+ * @template Type - 请求类型，支持 `'xhr'` 或 `'fetch'`
+ * @template Payload - 请求参数类型，默认为 `unknown`
+ * @template Result - 响应数据类型，默认为 `unknown`
  */
-export type RequestFn = (request: AjaxRequest) => unknown
+export type RequestFn<Type = unknown, Payload = unknown, Result = unknown> = (
+  request: Type extends 'xhr' | 'fetch' ? Ajax.Request<Type, Payload, Result> : Ajax.BaseRequest
+) => unknown
 
 /**
  * @example
@@ -68,19 +73,9 @@ class RequestHooker {
 }
 
 /**
- * 用于简化xhr和fetch的hook
+ * 简化请求 hooker 的使用
  * @example
- * //old usage
- *  ajaxHooker.hook((request)=>{
- *  fn1(request)
- *  fn2(request)
- *  .etc...
- * })
- * // new usage
  * onRequest(fn1, fn2, fn3)
- *
- * // 可以多次调用，不会重复 hook
- * onRequest(fn4, fn5)
  */
 export default function onRequest(...args: RequestFn[]): void {
   RequestHooker.getInstance().add(...args)

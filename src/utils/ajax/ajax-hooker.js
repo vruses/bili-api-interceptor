@@ -1,3 +1,4 @@
+// biome-ignore-all lint: reason
 // ==UserScript==
 // @name         ajaxHooker
 // @author       cxxjackie
@@ -33,7 +34,7 @@ const ajaxHooker = (() => {
   const xhrAsyncEvents = ['readystatechange', 'load', 'loadend']
   const getType = {}.toString.call.bind({}.toString)
   const getDescriptor = Object.getOwnPropertyDescriptor.bind(Object)
-  const emptyFn = () => { }
+  const emptyFn = () => {}
   const errorFn = (e) => console.error(e)
   function isThenable(obj) {
     return obj && ['object', 'function'].includes(typeof obj) && typeof obj.then === 'function'
@@ -243,7 +244,7 @@ const ajaxHooker = (() => {
           for (const key of xhrResponses) {
             try {
               tempValues[key] = this.originalXhr[key]
-            } catch (err) { }
+            } catch (err) {}
             defineProp(
               response,
               key,
@@ -283,7 +284,7 @@ const ajaxHooker = (() => {
       }
     }
 
-    toJSON() { } // Converting circular structure to JSON
+    toJSON() {} // Converting circular structure to JSON
     addEvent(type, event) {
       if (type.startsWith('on')) {
         this.proxyEvents[type] = typeof event === 'function' ? event : null
@@ -354,9 +355,9 @@ const ajaxHooker = (() => {
       }
       this.openArgs = args
       this.resThenable = new SyncThenable()
-        ;['responseURL', 'readyState', 'status', 'statusText', ...xhrResponses].forEach((key) => {
-          delete this.proxyProps[key]
-        })
+      ;['responseURL', 'readyState', 'status', 'statusText', ...xhrResponses].forEach((key) => {
+        delete this.proxyProps[key]
+      })
       return this.originalXhr.open(method, url, async, ...args)
     }
 
@@ -464,13 +465,13 @@ const ajaxHooker = (() => {
           }
           fetchResponses.forEach(
             (key) =>
-            (res[key] = function () {
-              if (key in response) return Promise.resolve(response[key])
-              return resProto[key].call(this).then((val) => {
-                response[key] = val
-                return req.waitForResponseKeys(response).then(() => (key in response ? response[key] : val))
+              (res[key] = function () {
+                if (key in response) return Promise.resolve(response[key])
+                return resProto[key].call(this).then((val) => {
+                  response[key] = val
+                  return req.waitForResponseKeys(response).then(() => (key in response ? response[key] : val))
+                })
               })
-            })
           )
         }
         resolve(res)

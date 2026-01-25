@@ -2,9 +2,9 @@ import type { RequestFn } from '@/utils/ajax'
 import { mockUserInfoResult } from './model/constants'
 
 /**
- * @description 伪造顶部nav的用户信息与登录状态
+ * @description 伪造移动 h5 顶部nav的用户信息与登录状态
  */
-export const useNav: RequestFn = (request) => {
+export const useNav: RequestFn<unknown> = (request) => {
   if (!request.url.includes('/x/web-interface/nav')) return
   // pc端登录
   if (request.type === 'xhr') {
