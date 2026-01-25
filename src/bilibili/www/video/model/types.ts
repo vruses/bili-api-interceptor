@@ -6,6 +6,7 @@ export interface PlayerUserInfo {
   level_info: {
     current_level: number
   }
+  need_login_subtitle: boolean
   subtitle: Subtitles['subtitle'] | null
 }
 
