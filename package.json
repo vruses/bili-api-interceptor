@@ -21,7 +21,9 @@
   },
   "dependencies": {
     "lodash-es": "^4.17.21",
-    "ts-md5": "^2.0.1"
+    "protobufjs": "^8.0.0",
+    "ts-md5": "^2.0.1",
+    "type-fest": "^5.4.1"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.5",

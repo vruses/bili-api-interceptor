@@ -1,0 +1,379 @@
+export const DmWebView = {
+  nested: {
+    bilibili: {
+      nested: {
+        community: {
+          nested: {
+            service: {
+              nested: {
+                dm: {
+                  nested: {
+                    v1: {
+                      nested: {
+                        DmWebViewReply: {
+                          fields: {
+                            state: { type: 'int32', id: 1 },
+                            text: { type: 'string', id: 2 },
+                            textSide: { type: 'string', id: 3 },
+                            dmSge: { type: 'DmSegConfig', id: 4 },
+                            flag: { type: 'DanmakuFlagConfig', id: 5 },
+                            specialDms: { rule: 'repeated', type: 'string', id: 6 },
+                            checkBox: { type: 'bool', id: 7 },
+                            count: { type: 'int64', id: 8 },
+                            commandDms: { rule: 'repeated', type: 'CommandDm', id: 9 },
+                            dmSetting: { type: 'DanmuWebPlayerConfig', id: 10 },
+                            reportFilter: { rule: 'repeated', type: 'string', id: 11 },
+                            expressions: { rule: 'repeated', type: 'Expressions', id: 12 },
+                            postPanel: { rule: 'repeated', type: 'PostPanel', id: 13 },
+                            activityMetas: { rule: 'repeated', type: 'string', id: 14 },
+                            postPanelV2: { rule: 'repeated', type: 'PostPanelV2', id: 15 },
+                            subViews: { rule: 'repeated', type: 'DmSubView', id: 16 },
+                            qoe: { type: 'QoeInfo', id: 17 },
+                            maskWalls: { rule: 'repeated', type: 'DmMaskWall', id: 18 },
+                            dmRestrict: { type: 'DMRestrict', id: 19 },
+                            subtitle: { type: 'VideoSubtitle', id: 20 },
+                          },
+                        },
+                        DMRestrict: { fields: { periods: { rule: 'repeated', type: 'DMRestrictPeriod', id: 1 } } },
+                        DMRestrictPeriod: {
+                          fields: { start: { type: 'int64', id: 1 }, end: { type: 'int64', id: 2 } },
+                        },
+                        DmMaskWall: {
+                          fields: {
+                            start: { type: 'int64', id: 1 },
+                            end: { type: 'int64', id: 2 },
+                            content: { type: 'string', id: 3 },
+                            contentType: { type: 'DmMaskWallContentType', id: 4 },
+                            bizType: { type: 'DmMaskWallBizType', id: 5 },
+                            contents: { rule: 'repeated', type: 'DmMaskWallContent', id: 6 },
+                          },
+                        },
+                        DmMaskWallBizType: {
+                          values: {
+                            DmMaskWallBizTypeUnknown: 0,
+                            DmMaskWallBizTypeOGV: 1,
+                            DmMaskWallBizTypeBizPic: 2,
+                            DmMaskWallBizTypeMute: 3,
+                            DmMaskWallBizTypeRecord: 4,
+                          },
+                        },
+                        DmMaskWallContent: {
+                          fields: {
+                            type: { type: 'DmMaskWallContentType', id: 1 },
+                            content: { type: 'string', id: 2 },
+                          },
+                        },
+                        DmMaskWallContentType: {
+                          values: {
+                            DmMaskWallContentTypeUnknown: 0,
+                            DmMaskWallContentTypeText: 1,
+                            DmMaskWallContentTypePic: 2,
+                          },
+                        },
+                        QoeInfo: { fields: { info: { type: 'string', id: 1 } } },
+                        PostPanel: {
+                          fields: {
+                            start: { type: 'int64', id: 1 },
+                            end: { type: 'int64', id: 2 },
+                            priority: { type: 'int64', id: 3 },
+                            bizId: { type: 'int64', id: 4 },
+                            bizType: { type: 'PostPanelBizType', id: 5 },
+                            clickButton: { type: 'ClickButton', id: 6 },
+                            textInput: { type: 'TextInput', id: 7 },
+                            checkBox: { type: 'CheckBox', id: 8 },
+                            toast: { type: 'Toast', id: 9 },
+                          },
+                        },
+                        PostPanelV2: {
+                          fields: {
+                            start: { type: 'int64', id: 1 },
+                            end: { type: 'int64', id: 2 },
+                            bizType: { type: 'PostPanelBizType', id: 3 },
+                            clickButton: { type: 'ClickButtonV2', id: 4 },
+                            textInput: { type: 'TextInputV2', id: 5 },
+                            checkBox: { type: 'CheckBoxV2', id: 6 },
+                            toast: { type: 'ToastV2', id: 7 },
+                            bubble: { type: 'BubbleV2', id: 8 },
+                            label: { type: 'LabelV2', id: 9 },
+                            postStatus: { type: 'PostStatus', id: 10 },
+                          },
+                        },
+                        ClickButton: {
+                          fields: {
+                            portraitText: { rule: 'repeated', type: 'string', id: 1 },
+                            landscapeText: { rule: 'repeated', type: 'string', id: 2 },
+                            portraitTextFocus: { rule: 'repeated', type: 'string', id: 3 },
+                            landscapeTextFocus: { rule: 'repeated', type: 'string', id: 4 },
+                            renderType: { type: 'RenderType', id: 5 },
+                            show: { type: 'bool', id: 6 },
+                          },
+                        },
+                        ClickButtonV2: {
+                          fields: {
+                            portraitText: { rule: 'repeated', type: 'string', id: 1 },
+                            landscapeText: { rule: 'repeated', type: 'string', id: 2 },
+                            portraitTextFocus: { rule: 'repeated', type: 'string', id: 3 },
+                            landscapeTextFocus: { rule: 'repeated', type: 'string', id: 4 },
+                            renderType: { type: 'RenderType', id: 5 },
+                            textInputPost: { type: 'bool', id: 6 },
+                            exposureOnce: { type: 'bool', id: 7 },
+                            exposureType: { type: 'ExposureType', id: 8 },
+                          },
+                        },
+                        PostPanelBizType: {
+                          values: {
+                            PostPanelBizTypeNone: 0,
+                            PostPanelBizTypeEncourage: 1,
+                            PostPanelBizTypeFragClose: 4,
+                            PostPanelBizTypeColorDM: 2,
+                          },
+                        },
+                        TextInput: {
+                          fields: {
+                            portraitPlaceholder: { rule: 'repeated', type: 'string', id: 1 },
+                            landscapePlaceholder: { rule: 'repeated', type: 'string', id: 2 },
+                            renderType: { type: 'RenderType', id: 3 },
+                            placeholderPost: { type: 'bool', id: 4 },
+                            show: { type: 'bool', id: 5 },
+                            postStatus: { type: 'PostStatus', id: 7 },
+                          },
+                        },
+                        TextInputV2: {
+                          fields: {
+                            portraitPlaceholder: { rule: 'repeated', type: 'string', id: 1 },
+                            landscapePlaceholder: { rule: 'repeated', type: 'string', id: 2 },
+                            renderType: { type: 'RenderType', id: 3 },
+                            placeholderPost: { type: 'bool', id: 4 },
+                            textInputLimit: { type: 'int32', id: 6 },
+                          },
+                        },
+                        PostStatus: { values: { PostStatusNormal: 0, PostStatusClosed: 1 } },
+                        RenderType: { values: { RenderTypeNone: 0, RenderTypeSingle: 1, RenderTypeRotation: 2 } },
+                        CheckBox: {
+                          fields: {
+                            text: { type: 'string', id: 1 },
+                            type: { type: 'CheckboxType', id: 2 },
+                            defaultValue: { type: 'bool', id: 3 },
+                            show: { type: 'bool', id: 4 },
+                          },
+                        },
+                        CheckBoxV2: {
+                          fields: {
+                            text: { type: 'string', id: 1 },
+                            type: { type: 'CheckboxType', id: 2 },
+                            defaultValue: { type: 'bool', id: 3 },
+                          },
+                        },
+                        CheckboxType: { values: { CheckboxTypeNone: 0, CheckboxTypeEncourage: 1 } },
+                        Toast: {
+                          fields: {
+                            text: { type: 'string', id: 1 },
+                            duration: { type: 'int32', id: 2 },
+                            show: { type: 'bool', id: 3 },
+                            button: { type: 'Button', id: 4 },
+                          },
+                        },
+                        ToastV2: {
+                          fields: {
+                            text: { type: 'string', id: 1 },
+                            duration: { type: 'int32', id: 2 },
+                            toastButtonV2: { type: 'ToastButtonV2', id: 3 },
+                          },
+                        },
+                        BubbleV2: {
+                          fields: {
+                            text: { type: 'string', id: 1 },
+                            url: { type: 'string', id: 2 },
+                            bubbleType: { type: 'BubbleType', id: 3 },
+                            exposureOnce: { type: 'bool', id: 4 },
+                            exposureType: { type: 'ExposureType', id: 5 },
+                          },
+                        },
+                        BubbleType: {
+                          values: { BubbleTypeNone: 0, BubbleTypeClickButton: 1, BubbleTypeDmSettingPanel: 2 },
+                        },
+                        LabelV2: {
+                          fields: {
+                            title: { type: 'string', id: 1 },
+                            content: { rule: 'repeated', type: 'string', id: 2 },
+                            exposureOnce: { type: 'bool', id: 3 },
+                            exposureType: { type: 'ExposureType', id: 4 },
+                          },
+                        },
+                        ExposureType: { values: { ExposureTypeNone: 0, ExposureTypeDMSend: 1 } },
+                        ToastButtonV2: {
+                          fields: { text: { type: 'string', id: 1 }, action: { type: 'ToastFunctionType', id: 2 } },
+                        },
+                        Button: {
+                          fields: { text: { type: 'string', id: 1 }, action: { type: 'ToastFunctionType', id: 2 } },
+                        },
+                        ToastFunctionType: { values: { ToastFunctionTypeNone: 0, ToastFunctionTypePostPanel: 1 } },
+                        ToastBizType: { values: { ToastBizTypeNone: 0, ToastBizTypeEncourage: 1 } },
+                        CommandDm: {
+                          fields: {
+                            oid: { type: 'int64', id: 2 },
+                            mid: { type: 'int64', id: 3 },
+                            command: { type: 'string', id: 4 },
+                            text: { type: 'string', id: 5 },
+                            stime: { type: 'int32', id: 6 },
+                            ctime: { type: 'string', id: 7 },
+                            mtime: { type: 'string', id: 8 },
+                            extra: { type: 'string', id: 9 },
+                            dmid: { type: 'string', id: 10 },
+                          },
+                        },
+                        DmSegConfig: {
+                          fields: { pageSize: { type: 'int64', id: 1 }, total: { type: 'int64', id: 2 } },
+                        },
+                        DanmakuFlagConfig: {
+                          fields: {
+                            recFlag: { type: 'int32', id: 1 },
+                            recText: { type: 'string', id: 2 },
+                            recSwitch: { type: 'int32', id: 3 },
+                          },
+                        },
+                        DmSegMobileReply: {
+                          fields: {
+                            elems: { rule: 'repeated', type: 'DanmakuElem', id: 1 },
+                            colorfulSrc: { rule: 'repeated', type: 'DmColorful', id: 5 },
+                          },
+                        },
+                        DanmakuElem: {
+                          fields: {
+                            stime: { type: 'int32', id: 2 },
+                            mode: { type: 'int32', id: 3 },
+                            size: { type: 'int32', id: 4 },
+                            color: { type: 'uint32', id: 5 },
+                            uhash: { type: 'string', id: 6 },
+                            text: { type: 'string', id: 7 },
+                            date: { type: 'int64', id: 8 },
+                            weight: { type: 'int32', id: 9 },
+                            action: { type: 'string', id: 10 },
+                            pool: { type: 'int32', id: 11 },
+                            dmid: { type: 'string', id: 12 },
+                            attr: { type: 'int32', id: 13 },
+                            animation: { type: 'string', id: 22 },
+                            colorful: { type: 'DmColorfulType', id: 24 },
+                            oid: { type: 'int64', id: 26 },
+                            dmFrom: { type: 'DmFromType', id: 27 },
+                          },
+                        },
+                        DmFromType: { values: { DmFromUnknown: 0, DmFromNormal: 1, DmFromCmd: 2, DmFromLive: 3 } },
+                        DanmuWebPlayerConfig: {
+                          fields: {
+                            dmSwitch: { type: 'bool', id: 1 },
+                            aiSwitch: { type: 'bool', id: 2 },
+                            aiLevel: { type: 'int32', id: 3 },
+                            typeTop: { type: 'bool', id: 4 },
+                            typeScroll: { type: 'bool', id: 5 },
+                            typeBottom: { type: 'bool', id: 6 },
+                            typeColor: { type: 'bool', id: 7 },
+                            typeSpecial: { type: 'bool', id: 8 },
+                            preventshade: { type: 'bool', id: 9 },
+                            dmask: { type: 'bool', id: 10 },
+                            opacity: { type: 'float', id: 11 },
+                            speedplus: { type: 'float', id: 13 },
+                            fontsize: { type: 'float', id: 14 },
+                            fullscreensync: { type: 'bool', id: 15 },
+                            speedsync: { type: 'bool', id: 16 },
+                            fontfamily: { type: 'string', id: 17 },
+                            bold: { type: 'bool', id: 18 },
+                            fontborder: { type: 'int32', id: 19 },
+                            seniorModeSwitch: { type: 'int32', id: 21 },
+                            typeTopBottom: { type: 'bool', id: 24 },
+                            dmarea: { type: 'int32', id: 25 },
+                            dmdensity: { type: 'int32', id: 26 },
+                          },
+                        },
+                        Expressions: { fields: { data: { rule: 'repeated', type: 'Expression', id: 1 } } },
+                        Expression: {
+                          fields: {
+                            keyword: { rule: 'repeated', type: 'string', id: 1 },
+                            url: { type: 'string', id: 2 },
+                            period: { rule: 'repeated', type: 'Period', id: 3 },
+                          },
+                        },
+                        Period: { fields: { start: { type: 'int64', id: 1 }, end: { type: 'int64', id: 2 } } },
+                        AnyBody: { fields: { body: { type: 'google.protobuf.Any', id: 1 } } },
+                        DmColorful: {
+                          fields: { type: { type: 'DmColorfulType', id: 1 }, src: { type: 'string', id: 2 } },
+                        },
+                        DmColorfulType: { values: { NoneType: 0, VipGradualColor: 60001 } },
+                        DmSubView: {
+                          fields: {
+                            type: { type: 'int32', id: 1 },
+                            oid: { type: 'int64', id: 2 },
+                            pid: { type: 'int64', id: 3 },
+                            postPanel_2: { rule: 'repeated', type: 'PostPanelV2', id: 4 },
+                          },
+                        },
+                        VideoSubtitle: {
+                          fields: {
+                            lan: { type: 'string', id: 1 },
+                            lanDoc: { type: 'string', id: 2 },
+                            subtitles: { rule: 'repeated', type: 'SubtitleItem', id: 3 },
+                            subtitlePosition: { type: 'SubtitlePosition', id: 4 },
+                            fontSizeType: { type: 'FontSizeType', id: 5 },
+                          },
+                        },
+                        SubtitleType: { values: { CC: 0, AI: 1 } },
+                        SubtitleAiType: { values: { Normal: 0, Translate: 1 } },
+                        SubtitleAiStatus: { values: { None: 0, Exposure: 1, Assist: 2 } },
+                        SubtitleRole: { values: { Default: 0, Main: 1, Secondary: 2 } },
+                        SubtitleItem: {
+                          fields: {
+                            id: { type: 'int64', id: 1 },
+                            idStr: { type: 'string', id: 2 },
+                            lan: { type: 'string', id: 3 },
+                            lanDoc: { type: 'string', id: 4 },
+                            subtitleUrl: { type: 'string', id: 5 },
+                            author: { type: 'UserInfo', id: 6 },
+                            type: { type: 'SubtitleType', id: 7 },
+                            lanDocBrief: { type: 'string', id: 8 },
+                            aiType: { type: 'SubtitleAiType', id: 9 },
+                            aiStatus: { type: 'SubtitleAiStatus', id: 10 },
+                            role: { type: 'SubtitleRole', id: 11 },
+                            subtitleHeight: { type: 'SubtitleHeight', id: 12 },
+                          },
+                        },
+                        SubtitlePosition: {
+                          fields: {
+                            xMin: { type: 'double', id: 1 },
+                            yMin: { type: 'double', id: 2 },
+                            xMax: { type: 'double', id: 3 },
+                            yMax: { type: 'double', id: 4 },
+                            purpose: { type: 'PurposeType', id: 5 },
+                          },
+                        },
+                        PurposeType: { values: { PurposeCover: 0, PurposeOGV: 1 } },
+                        FontSizeType: { values: { FontSizeDefault: 0, FontSizeOGV: 1 } },
+                        SubtitleHeight: { fields: { value: { type: 'double', id: 1 } } },
+                        UserInfo: {
+                          fields: {
+                            mid: { type: 'int64', id: 1 },
+                            name: { type: 'string', id: 2 },
+                            sex: { type: 'string', id: 3 },
+                            face: { type: 'string', id: 4 },
+                            sign: { type: 'string', id: 5 },
+                            rank: { type: 'int32', id: 6 },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    google: {
+      nested: {
+        protobuf: {
+          nested: { Any: { fields: { type_url: { type: 'string', id: 1 }, value: { type: 'bytes', id: 2 } } } },
+        },
+      },
+    },
+  },
+}
