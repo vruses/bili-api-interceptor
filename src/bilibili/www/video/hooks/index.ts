@@ -1,13 +1,14 @@
 import protobuf from 'protobufjs'
-import { DmWebView } from '@/bilibili/www/video/model/DmWebView'
 import { img_key, sub_key } from '@/constants'
 import type { ResultType } from '@/types/response'
 import type { RequestFn } from '@/utils/ajax'
 import { encWbi } from '@/utils/wbi-sign'
-import { getEncryptSubtitle } from './hooks/useCrypt'
-import { relationResult } from './model/constants'
-import type { PlayerUserInfo } from './model/types'
+import { relationResult } from '../model/constants'
+import { DmWebView } from '../model/DmWebView'
+import type { PlayerUserInfo } from '../model/types'
+import { getEncryptSubtitle } from './useCrypt'
 import useSubtitle from './useSubtitle'
+
 /**
  * @description 拦截获取视频评论、评论的评论列表请求，解除评论获取的数量限制
  */
@@ -68,7 +69,7 @@ export const useRelation: RequestFn<'xhr'> = (request) => {
 }
 
 /**
- * @description 修改弹幕元数据，添加加密后的弹幕接口，前端反序列化时能获取字幕数据
+ * @description 修改弹幕元数据，并添加混淆后的弹幕 URL, 前端反序列化时便能获取字幕数据
  * @param subtitleCache 页面首次加载时或者每次请求时等待的字幕接口
  * @returns 请求拦截函数
  */

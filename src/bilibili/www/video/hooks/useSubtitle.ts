@@ -2,7 +2,7 @@ import { camelCase, mapKeys } from 'lodash-es'
 import type { CamelCasedPropertiesDeep } from 'type-fest'
 import { onDocInteractive } from '@/core/lifecycle'
 import type { ResultType } from '@/types/response'
-import type { Subtitles } from './model/types'
+import type { Subtitles } from '../model/types'
 
 /**
  *
@@ -53,7 +53,7 @@ export default function useSubtitle() {
   function camelizeSubtitle(subtitle: Subtitles['subtitle']) {
     const camelizedSubtitle = mapKeys(subtitle, (_v, k) => camelCase(k)) as any
     // 字幕列表也需要转换
-    const camelizedSubtitles = subtitle!.subtitles.map((subtitle) => {
+    const camelizedSubtitles = subtitle.subtitles.map((subtitle) => {
       return {
         ...mapKeys(subtitle, (_v, k) => camelCase(k)),
       }
