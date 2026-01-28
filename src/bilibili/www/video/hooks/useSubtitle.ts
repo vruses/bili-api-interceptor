@@ -1,6 +1,8 @@
+import { camelCase, mapKeys } from 'lodash-es'
+import type { CamelCasedPropertiesDeep } from 'type-fest'
 import { onDocInteractive } from '@/core/lifecycle'
 import type { ResultType } from '@/types/response'
-import type { Subtitles } from './model/types'
+import type { Subtitles } from '../model/types'
 
 /**
  *
@@ -24,6 +26,7 @@ export async function fetchSubtitle(aid: number, cid: number) {
 }
 
 type SubtitleCache = Subtitles['subtitle'] | null
+type CamelizedSubtitle = CamelCasedPropertiesDeep<Subtitles['subtitle']>
 
 /**
  * subtitle缓存与更新subtitle
@@ -47,8 +50,22 @@ export default function useSubtitle() {
       subtitleCache.current = Promise.resolve(null)
     }
   }
+  /** subtitle 接口返回的对象字段为下划线命名，转换为 protobuf 格式所需的驼峰命名 */
+  function camelizeSubtitle(subtitle: Subtitles['subtitle']) {
+    const camelizedSubtitle = mapKeys(subtitle, (_v, k) => camelCase(k)) as any
+    // 字幕列表也需要转换
+    const camelizedSubtitles = subtitle.subtitles.map((subtitle) => {
+      return {
+        ...mapKeys(subtitle, (_v, k) => camelCase(k)),
+      }
+    })
+    camelizedSubtitle.subtitles = camelizedSubtitles
+    return camelizedSubtitle as CamelizedSubtitle
+  }
+
   return {
     subtitleCache,
     setSubtitle,
+    camelizeSubtitle,
   }
 }
