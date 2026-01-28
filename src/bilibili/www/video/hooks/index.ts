@@ -105,12 +105,7 @@ export const useDmView: () => RequestFn<'xhr', unknown, ArrayBuffer> = () => {
       if (camelizedSubtitle) {
         const camelizedSubtitles = camelizedSubtitle.subtitles.map((subtitle) => {
           return {
-            /**
-             * //TODO: 由于二次序列化的问题，可能导致再次反序列化失败
-             * lanDoc 用于显示字幕按钮上的各国语言名称
-             */
             ...subtitle,
-            lanDoc: subtitle.lan,
             // 字幕 URI 加密
             subtitleUrl: getEncryptSubtitle(subtitle.subtitleUrl),
           }
@@ -118,11 +113,11 @@ export const useDmView: () => RequestFn<'xhr', unknown, ArrayBuffer> = () => {
         camelizedSubtitle.subtitles = camelizedSubtitles
       }
 
-      // 修改 meta 中的字幕对象并序列化为二进制数据
+      // 修改 meta 中的字幕对象, 序列化为二进制数据
       dmMetaData.subtitle = camelizedSubtitle
       const encodedMessage = DmWebViewReply.create(dmMetaData)
       const encodedBuffer = DmWebViewReply.encode(encodedMessage).finish()
-      res.response = encodedBuffer.buffer as ArrayBuffer
+      res.response = encodedBuffer as unknown as ArrayBuffer
     }
   }
 }

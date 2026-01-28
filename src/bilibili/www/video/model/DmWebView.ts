@@ -1,3 +1,8 @@
+/**
+ * protobufjs 转化的 json 格式
+ *
+ * bilibili 用 protobufjs 反序列化数据
+ */
 export const DmWebView = {
   nested: {
     bilibili: {

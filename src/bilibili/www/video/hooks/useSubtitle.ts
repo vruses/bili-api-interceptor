@@ -26,6 +26,7 @@ export async function fetchSubtitle(aid: number, cid: number) {
 }
 
 type SubtitleCache = Subtitles['subtitle'] | null
+type CamelizedSubtitle = CamelCasedPropertiesDeep<Subtitles['subtitle']>
 
 /**
  * subtitle缓存与更新subtitle
@@ -59,8 +60,9 @@ export default function useSubtitle() {
       }
     })
     camelizedSubtitle.subtitles = camelizedSubtitles
-    return camelizedSubtitle as CamelCasedPropertiesDeep<Subtitles['subtitle']>
+    return camelizedSubtitle as CamelizedSubtitle
   }
+
   return {
     subtitleCache,
     setSubtitle,
