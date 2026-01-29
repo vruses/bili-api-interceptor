@@ -22,8 +22,7 @@
   "dependencies": {
     "lodash-es": "^4.17.21",
     "protobufjs": "^8.0.0",
-    "ts-md5": "^2.0.1",
-    "type-fest": "^5.4.1"
+    "ts-md5": "^2.0.1"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.5",
@@ -32,6 +31,7 @@
     "lefthook": "^1.13.6",
     "standard-version": "^9.5.0",
     "typescript": "^5.9.3",
+    "type-fest": "^5.4.1",
     "vite": "^6.0.5",
     "vite-plugin-monkey": "^5.0.3"
   }

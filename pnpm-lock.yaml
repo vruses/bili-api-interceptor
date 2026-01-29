@@ -17,9 +17,6 @@ importers:
       ts-md5:
         specifier: ^2.0.1
         version: 2.0.1
-      type-fest:
-        specifier: ^5.4.1
-        version: 5.4.1
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.2.5
@@ -36,6 +33,9 @@ importers:
       standard-version:
         specifier: ^9.5.0
         version: 9.5.0
+      type-fest:
+        specifier: ^5.4.1
+        version: 5.4.1
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
