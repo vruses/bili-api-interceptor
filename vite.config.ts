@@ -1,7 +1,7 @@
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
-import monkey from 'vite-plugin-monkey'
+import monkey, { cdn } from 'vite-plugin-monkey'
 import packageJSON from './package.json'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -30,6 +30,11 @@ export default defineConfig({
         'run-at': 'document-start',
       },
       server: { open: false },
+      build: {
+        externalGlobals: {
+          protobufjs: cdn.jsdelivr('protobuf', 'dist/protobuf.min.js'),
+        },
+      },
     }),
   ],
 })
