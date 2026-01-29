@@ -1,7 +1,7 @@
 {
   "name": "bili-api-interceptor",
   "type": "module",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "private": true,
   "author": "<vurses@qq.com>",
   "license": "MIT",

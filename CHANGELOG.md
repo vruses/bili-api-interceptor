@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/vruses/bili-api-interceptor/compare/v2.0.4...v2.1.0) (2026-01-29)
+
+
+### Features
+
+* add protobuf support for subtitle handling and deobfuscate subtitle URLs ([79c5dd3](https://github.com/vruses/bili-api-interceptor/commit/79c5dd302764ae275f2f39ced13796683a285229))
+* update request hook usage ([25b7558](https://github.com/vruses/bili-api-interceptor/commit/25b755849ead899726f6ffff65885a39be319d0f))
+* XOR encryption and decryption for subtitle URI paths ([a14bf72](https://github.com/vruses/bili-api-interceptor/commit/a14bf72812a48f9045f15c6d88144eeecdb10dcb))
+
+
+### Bug Fixes
+
+* 修复字幕功能不显示的问题, refs [#5](https://github.com/vruses/bili-api-interceptor/issues/5) ([c98c5c6](https://github.com/vruses/bili-api-interceptor/commit/c98c5c64893939456dd4e6565f7a088c0cb76b20))
+* **subtitle:** fix deserialization failure that sometimes occurs after serialization ([761c173](https://github.com/vruses/bili-api-interceptor/commit/761c173b6c22949e5e0c663e5c6b78e6c014c4e5))
+
 ### [2.0.4](https://github.com/vruses/bili-api-interceptor/compare/v2.0.3...v2.0.4) (2025-12-06)
 
 ### [2.0.3](https://github.com/vruses/bili-api-interceptor/compare/v2.0.2...v2.0.3) (2025-11-23)
