@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.1](https://github.com/vruses/bili-api-interceptor/compare/v2.2.0...v2.2.1) (2026-01-30)
+
+
+### Bug Fixes
+
+* relocate useReply to fix comments on some pages not being hooked ([49a7d9b](https://github.com/vruses/bili-api-interceptor/commit/49a7d9bc4ccbb4bbf46164ab5374814280695207))
+
 ## [2.2.0](https://github.com/vruses/bili-api-interceptor/compare/v2.1.0...v2.2.0) (2026-01-30)
 
 
