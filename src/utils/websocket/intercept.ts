@@ -1,6 +1,7 @@
 let isInterceptActive: boolean = false
 let wsOriginalSend: ((this: WebSocket, data: string | ArrayBufferLike | Blob | ArrayBufferView) => void) | null = null
 
+/** 修改ws连接成功后的发送的第一个数据包以在直播页获取弹幕 */
 function toggleIntercept(): void {
   if (!isInterceptActive) {
     // 启动拦截
