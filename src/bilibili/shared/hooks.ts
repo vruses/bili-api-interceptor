@@ -1,4 +1,4 @@
-import type { RequestFn } from '@/utils/ajax'
+import { clearRequestHooks, type RequestFn } from '@/utils/ajax'
 import { mockUserInfoResult } from './model/constants'
 
 /**
@@ -9,6 +9,13 @@ export const useNav: RequestFn<unknown> = (request) => {
   // pc端登录
   if (request.type === 'xhr') {
     request.response = (res) => {
+      try {
+        const userInfo = JSON.parse(res.responseText)
+        if (userInfo.data.isLogin) {
+          clearRequestHooks()
+          return
+        }
+      } catch (_error) {}
       res.responseText = JSON.stringify(mockUserInfoResult)
     }
   }
