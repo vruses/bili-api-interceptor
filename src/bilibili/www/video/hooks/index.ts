@@ -10,15 +10,6 @@ import { getEncryptSubtitle } from './useCrypt'
 import useSubtitle from './useSubtitle'
 
 /**
- * @description 拦截获取视频评论、评论的评论列表请求，解除评论获取的数量限制
- */
-export const useReply: RequestFn<'fetch'> = (request) => {
-  if (!request.url.includes('/x/v2/reply/wbi/main') && !request.url.includes('/x/v2/reply/reply')) return
-
-  request.credentials = 'omit'
-}
-
-/**
  * @description 控制播放器请求的用户信息始终为登录状态
  */
 export const usePlayer: RequestFn<'xhr'> = (request) => {
