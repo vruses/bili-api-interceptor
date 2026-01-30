@@ -1,6 +1,6 @@
-import { clearRequestHooks, type RequestFn } from '@/utils/ajax'
+import userStore from '@/store/user'
+import type { RequestFn } from '@/utils/ajax'
 import { mockUserInfoResult } from './model/constants'
-
 /**
  * @description 伪造移动 h5 顶部nav的用户信息与登录状态
  */
@@ -12,7 +12,7 @@ export const useNav: RequestFn<unknown> = (request) => {
       try {
         const userInfo = JSON.parse(res.responseText)
         if (userInfo.data.isLogin) {
-          clearRequestHooks()
+          userStore.isLogin.value = true
           return
         }
       } catch (_error) {}

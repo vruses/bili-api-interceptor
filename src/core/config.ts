@@ -2,7 +2,7 @@ import search from '@/bilibili/search'
 import shared from '@/bilibili/shared'
 import space from '@/bilibili/space'
 import www from '@/bilibili/www'
-import toggleIntercept from '@/utils/websocket/intercept'
+import { start as startDmIntercept } from '@/utils/websocket/intercept'
 
 /** 用于控制二级域名下应该执行的 request hook */
 export const domainConfig = {
@@ -36,6 +36,6 @@ export const domainConfig = {
       hook: [...space],
     },
     // 直播页
-    { name: 'live', hook: [], action: [toggleIntercept] },
+    { name: 'live', hook: [], action: [startDmIntercept] },
   ],
 }
