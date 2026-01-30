@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/vruses/bili-api-interceptor/compare/v2.1.0...v2.2.0) (2026-01-30)
+
+
+### Features
+
+* add userStore with login status watch to clean up hooks and stop WS intercept ([22751c2](https://github.com/vruses/bili-api-interceptor/commit/22751c2e1e3445f0e3bb2277c121ae025e8eae65)), closes [#2](https://github.com/vruses/bili-api-interceptor/issues/2)
+* check login state from response and clear request hooks when logged in ([ddacf25](https://github.com/vruses/bili-api-interceptor/commit/ddacf256773ff69b17e74be367f869e0a910afc8))
+
 ## [2.1.0](https://github.com/vruses/bili-api-interceptor/compare/v2.0.4...v2.1.0) (2026-01-29)
 
 
