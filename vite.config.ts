@@ -33,6 +33,7 @@ export default defineConfig({
       build: {
         externalGlobals: {
           protobufjs: cdn.jsdelivr('protobuf', 'dist/protobuf.min.js'),
+          '@vue/reactivity': cdn.jsdelivr('VueReactivity', 'dist/reactivity.global.min.js'),
         },
       },
     }),

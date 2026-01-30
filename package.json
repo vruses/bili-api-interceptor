@@ -20,6 +20,7 @@
     "release": "standard-version"
   },
   "dependencies": {
+    "@vue/reactivity": "^3.5.27",
     "lodash-es": "^4.17.21",
     "protobufjs": "^8.0.0",
     "ts-md5": "^2.0.1"
@@ -30,8 +31,8 @@
     "@types/node": "^24.0.15",
     "lefthook": "^1.13.6",
     "standard-version": "^9.5.0",
-    "typescript": "^5.9.3",
     "type-fest": "^5.4.1",
+    "typescript": "^5.9.3",
     "vite": "^6.0.5",
     "vite-plugin-monkey": "^5.0.3"
   }
