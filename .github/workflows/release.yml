@@ -38,6 +38,7 @@ jobs:
       - name: Build
         run: |
           pnpm build
+          pnpm build:min
 
       - name: Create Release with Changelog
         run: pnpx changelogithub
