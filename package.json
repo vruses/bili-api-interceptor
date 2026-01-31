@@ -1,5 +1,5 @@
 {
-  "name": "bili-api-interceptor",
+  "name": "beefreely",
   "type": "module",
   "version": "2.2.1",
   "private": true,
@@ -7,12 +7,13 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vruses/bili-api-interceptor.git"
+    "url": "https://github.com/vruses/beefreely.git"
   },
   "scripts": {
     "dev": "vite",
     "typecheck": "tsc",
     "build": "tsc && vite build",
+    "build:min": "tsc && vite build --mode minify",
     "preview": "vite preview",
     "format": "biome format --write",
     "lint": "biome check",
