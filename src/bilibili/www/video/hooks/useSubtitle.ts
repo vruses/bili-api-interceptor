@@ -17,9 +17,6 @@ export async function fetchSubtitle(aid: number, cid: number) {
       return result.json()
     })
     .then((result: ResultType<Subtitles>) => {
-      result.data.subtitle.subtitles.forEach((element) => {
-        element.subtitle_url = element.subtitle_url.replace(/^http:/, '')
-      })
       return result.data.subtitle
     })
     .catch(() => null)
