@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.2](https://github.com/vruses/beefreely/compare/v2.2.1...v2.2.2) (2026-02-02)
+
+
+### Bug Fixes
+
+* fix typo ([0ead587](https://github.com/vruses/beefreely/commit/0ead58791f57852cd52cc2655ff9f7675dc827d8))
+
 ### [2.2.1](https://github.com/vruses/bili-api-interceptor/compare/v2.2.0...v2.2.1) (2026-01-30)
 
 
